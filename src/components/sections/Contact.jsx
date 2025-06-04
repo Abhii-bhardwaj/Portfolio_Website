@@ -21,22 +21,22 @@ const Contact = () => {
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "linkedin.com/in/abhibhardwaj",
-      href: "https://linkedin.com/in/abhibhardwaj",
+      value: "linkedin.com/in/abhishekbhardwaj",
+      href: "https://www.linkedin.com/in/abhishek-bhardwaj-31513b279?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app ",
       color: currentTheme ? "hover:text-blue-400" : "hover:text-blue-600",
     },
     {
       icon: Github,
       label: "GitHub",
-      value: "github.com/abhibhardwaj",
-      href: "https://github.com/abhibhardwaj",
+      value: "github.com/abhiibhardwaj",
+      href: "https://github.com/Abhii-bhardwaj/",
       color: currentTheme ? "hover:text-gray-300" : "hover:text-gray-700",
     },
     {
       icon: Twitter,
       label: "Twitter",
-      value: "@abhibhardwaj",
-      href: "https://twitter.com/abhibhardwaj",
+      value: "@M_AbhiBhardwaj",
+      href: "https://x.com/M_AbhiBhardwaj?t=BkxfIjEz_MW6P7eiImD1Cw&s=09",
       color: currentTheme ? "hover:text-cyan-400" : "hover:text-cyan-600",
     },
   ];

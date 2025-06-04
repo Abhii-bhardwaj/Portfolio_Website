@@ -8,28 +8,36 @@ import {
   ExternalLink,
   Code,
   Sparkles,
+  Terminal,
+  Zap,
+  Layers,
 } from "lucide-react";
 import AnimatedElement from "../shared/AnimatedElement";
 import useThemeStore from "../../Stores/useThemeStore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 const Hero = () => {
   const { isDarkMode, darkMode } = useThemeStore();
   const currentTheme = isDarkMode || darkMode;
 
-  // Typing animation text
-  const roles = [
-    "Frontend Developer",
-    "React Specialist",
-    "UI/UX Enthusiast",
-    "Problem Solver",
-  ];
+  // Typing animation text - memoized for performance
+  const roles = useMemo(
+    () => [
+      "Frontend Developer",
+      "React Specialist",
+      "UI/UX Enthusiast",
+      "Problem Solver",
+    ],
+    []
+  );
+
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Optimized typing animation with useCallback
   useEffect(() => {
-    const typeSpeed = isDeleting ? 100 : 150;
+    const typeSpeed = isDeleting ? 50 : 100; // Faster typing for better performance
     const currentText = roles[currentRole];
 
     const timeout = setTimeout(() => {
@@ -38,7 +46,7 @@ const Hero = () => {
       } else if (isDeleting && displayText !== "") {
         setDisplayText(currentText.slice(0, displayText.length - 1));
       } else if (!isDeleting && displayText === currentText) {
-        setTimeout(() => setIsDeleting(true), 2000);
+        setTimeout(() => setIsDeleting(true), 1500); // Reduced pause time
       } else if (isDeleting && displayText === "") {
         setIsDeleting(false);
         setCurrentRole((prev) => (prev + 1) % roles.length);
@@ -48,12 +56,109 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, currentRole, roles]);
 
-  const scrollToSection = (id) => {
+  const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }, []);
+
+  // Memoized static data
+  const codeSnippets = useMemo(
+    () => [
+      "const developer = 'Abhishek';",
+      "function createAmazingUI() {",
+      "  return React.magic();",
+      "}",
+      "// Building the future...",
+      "export default Success;",
+    ],
+    []
+  );
+
+  const techStack = useMemo(
+    () => [
+      {
+        name: "React",
+        color: "text-blue-400",
+        icon: "⚛️",
+        iconColor: "text-blue-400",
+      },
+      {
+        name: "Next.js",
+        color: currentTheme ? "text-white" : "text-gray-900",
+        icon: "▲",
+        iconColor: currentTheme ? "text-white" : "text-gray-900",
+      },
+      {
+        name: "TypeScript",
+        color: "text-blue-300",
+        icon: "TS",
+        iconColor: "text-blue-500",
+      },
+      {
+        name: "Tailwind",
+        color: "text-cyan-400",
+        icon: "🎨",
+        iconColor: currentTheme ? "text-cyan-400" : "text-cyan-600",
+      },
+      {
+        name: "Node.js",
+        color: "text-green-400",
+        icon: "🟢",
+        iconColor: "text-green-400",
+      },
+      {
+        name: "MongoDB",
+        color: "text-green-500",
+        icon: "🍃",
+        iconColor: "text-green-500",
+      },
+    ],
+    [currentTheme]
+  );
+
+  // Optimized animation variants
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.1,
+          delayChildren: 0.2,
+        },
+      },
+    }),
+    []
+  );
+
+  const itemVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          type: "spring",
+          stiffness: 100,
+          damping: 10,
+        },
+      },
+    }),
+    []
+  );
+
+  // Optimized button handlers
+  const handleResumeClick = useCallback(() => {
+    window.open(
+      "https://drive.google.com/file/d/1K2s3-qPWW9QzbAK7EYTqaZtjJwbX33Kh/view?usp=drive_link"
+    );
+  }, []);
+
+  const handleConnectClick = useCallback(() => {
+    scrollToSection("contact");
+  }, [scrollToSection]);
 
   return (
     <section
@@ -66,17 +171,15 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left Content */}
-          <AnimatedElement
+          <motion.div
             className="lg:w-1/2 text-center lg:text-left"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}>
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}>
             {/* Status Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              variants={itemVariants}
               className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 ${
                 currentTheme
                   ? "bg-green-600/20 text-green-400 border border-green-500/30"
@@ -88,9 +191,7 @@ const Hero = () => {
 
             {/* Greeting */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              variants={itemVariants}
               className={`text-lg mb-4 font-medium ${
                 currentTheme ? "text-blue-400" : "text-blue-600"
               }`}>
@@ -99,9 +200,7 @@ const Hero = () => {
 
             {/* Main Heading */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
+              variants={itemVariants}
               className={`text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight ${
                 currentTheme ? "text-white" : "text-gray-900"
               }`}>
@@ -116,11 +215,12 @@ const Hero = () => {
                   }`}
                   animate={{
                     rotate: [0, 20, 0],
-                    scale: [1, 1.2, 1],
+                    scale: [1, 1.1, 1],
                   }}
                   transition={{
-                    duration: 2,
+                    duration: 3,
                     repeat: Infinity,
+                    ease: "easeInOut",
                   }}>
                   <Sparkles size={24} />
                 </motion.div>
@@ -130,9 +230,7 @@ const Hero = () => {
 
             {/* Animated Role Title */}
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              variants={itemVariants}
               className={`text-xl sm:text-2xl lg:text-3xl mb-6 font-medium min-h-[40px] ${
                 currentTheme ? "text-gray-300" : "text-gray-700"
               }`}>
@@ -147,9 +245,7 @@ const Hero = () => {
 
             {/* Enhanced Description */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              variants={itemVariants}
               className={`text-lg mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed ${
                 currentTheme ? "text-gray-300" : "text-gray-700"
               }`}>
@@ -179,15 +275,14 @@ const Hero = () => {
 
             {/* Enhanced CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              variants={itemVariants}
               className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8">
               <motion.button
-                onClick={() => window.open("/Abhishek_Bhardwaj_Resume.pdf")}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className={`group flex items-center px-8 py-4 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-4 ${
+                onClick={handleResumeClick}
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className={`group flex items-center px-8 py-4 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus:ring-4 will-change-transform ${
                   currentTheme
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white focus:ring-blue-500/50 shadow-2xl shadow-blue-500/25"
                     : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white focus:ring-blue-500/50 shadow-2xl shadow-blue-500/25"
@@ -199,15 +294,16 @@ const Hero = () => {
                 Download Resume
                 <ExternalLink
                   size={16}
-                  className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 />
               </motion.button>
 
               <motion.button
-                onClick={() => scrollToSection("contact")}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className={`group px-8 py-4 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-4 backdrop-blur-sm ${
+                onClick={handleConnectClick}
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className={`group px-8 py-4 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus:ring-4 backdrop-blur-sm will-change-transform ${
                   currentTheme
                     ? "border-2 border-gray-500 text-gray-300 hover:bg-gray-700/50 hover:border-gray-400 focus:ring-gray-500/50"
                     : "border-2 border-gray-300 text-gray-700 hover:bg-gray-50/50 hover:border-gray-400 focus:ring-gray-300/50"
@@ -215,54 +311,184 @@ const Hero = () => {
                 Let's Connect
                 <Code
                   size={16}
-                  className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 />
               </motion.button>
             </motion.div>
-          </AnimatedElement>
+          </motion.div>
 
-          {/* Enhanced Right Content - Profile Image */}
-          <AnimatedElement
+          {/* Enhanced Right Content - Optimized Code Visualization */}
+          <motion.div
             className="lg:w-1/2 flex justify-center"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-              className="relative">
-              {/* Decorative Background */}
-              <div
-                className={`absolute inset-0 rounded-full ${
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}>
+            <div className="relative w-80 h-80 sm:w-96 sm:h-96">
+              {/* Floating Code Editor - Optimized */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className={`relative w-full h-full rounded-2xl overflow-hidden will-change-transform ${
                   currentTheme
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600"
-                    : "bg-gradient-to-r from-blue-500 to-purple-500"
-                } opacity-20 blur-2xl transform scale-110`}></div>
-
-              {/* Profile Image Container */}
-              <div
-                className={`relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 ${
-                  currentTheme
-                    ? "border-blue-500 shadow-2xl shadow-blue-500/25"
-                    : "border-blue-400 shadow-2xl shadow-blue-500/25"
-                } transform transition-transform duration-300`}>
-                <img
-                  src="/Abhi.jpg"
-                  alt="Abhishek Bhardwaj - Frontend Developer"
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-                />
-
-                {/* Overlay for better contrast */}
+                    ? "bg-gray-900/95 border border-gray-700/50"
+                    : "bg-white/95 border border-gray-200/50"
+                } backdrop-blur-sm shadow-2xl`}>
+                {/* Terminal Header */}
                 <div
-                  className={`absolute inset-0 ${
+                  className={`flex items-center px-4 py-3 ${
+                    currentTheme ? "bg-gray-800/90" : "bg-gray-100/90"
+                  } border-b ${
+                    currentTheme ? "border-gray-700/50" : "border-gray-200/50"
+                  }`}>
+                  <div className="flex space-x-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <div
+                    className={`flex items-center ml-4 ${
+                      currentTheme ? "text-gray-400" : "text-gray-600"
+                    }`}>
+                    <Terminal size={16} className="mr-2" />
+                    <span className="text-sm font-mono">developer.js</span>
+                  </div>
+                </div>
+
+                {/* Code Content - Optimized animations */}
+                <div className="p-4 h-full overflow-hidden">
+                  <div className="font-mono text-sm space-y-2">
+                    {codeSnippets.map((line, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{
+                          duration: 0.3,
+                          delay: 0.5 + index * 0.1,
+                          ease: "easeOut",
+                        }}
+                        className={`flex items-center ${
+                          currentTheme ? "text-gray-300" : "text-gray-700"
+                        }`}>
+                        <span
+                          className={`w-6 text-xs ${
+                            currentTheme ? "text-gray-500" : "text-gray-400"
+                          }`}>
+                          {index + 1}
+                        </span>
+                        <span
+                          className={`ml-2 ${
+                            line.includes("const") ||
+                            line.includes("function") ||
+                            line.includes("export")
+                              ? currentTheme
+                                ? "text-purple-400"
+                                : "text-purple-600"
+                              : line.includes("//")
+                              ? currentTheme
+                                ? "text-green-400"
+                                : "text-green-600"
+                              : ""
+                          }`}>
+                          {line}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Optimized Blinking Cursor */}
+                  <motion.div
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{
+                      duration: 1.2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className={`inline-block w-2 h-5 mt-2 ml-8 will-change-auto ${
+                      currentTheme ? "bg-blue-400" : "bg-blue-600"
+                    }`}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Optimized Floating Tech Stack Icons */}
+              {techStack.map((tech, index) => (
+                <motion.div
+                  key={tech.name}
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: 0.8 + index * 0.05,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 15,
+                  }}
+                  animate={{
+                    y: [0, -8, 0],
+                  }}
+                  transition={{
+                    duration: 4 + index * 0.2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatType: "reverse",
+                  }}
+                  className={`absolute will-change-transform ${
+                    index === 0
+                      ? "-top-4 -left-4"
+                      : index === 1
+                      ? "-top-6 right-8"
+                      : index === 2
+                      ? "top-12 -right-8"
+                      : index === 3
+                      ? "bottom-16 -right-6"
+                      : index === 4
+                      ? "-bottom-4 left-8"
+                      : "-bottom-6 -left-6"
+                  } ${
                     currentTheme
-                      ? "bg-gradient-to-t from-gray-900/20 to-transparent"
-                      : "bg-gradient-to-t from-white/10 to-transparent"
-                  }`}></div>
-              </div>
-            </motion.div>
-          </AnimatedElement>
+                      ? "bg-gray-800/95 border border-gray-600/50"
+                      : "bg-white/95 border border-gray-300/50"
+                  } backdrop-blur-sm rounded-xl p-3 shadow-lg`}>
+                  <div className="flex items-center space-x-2">
+                    <span className={`text-lg ${tech.iconColor || tech.color}`}>
+                      {tech.icon}
+                    </span>
+                    <span className={`text-sm font-semibold ${tech.color}`}>
+                      {tech.name}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Reduced and Optimized Particles */}
+              {[...Array(4)].map((_, index) => (
+                <motion.div
+                  key={index}
+                  className={`absolute w-1.5 h-1.5 rounded-full will-change-transform ${
+                    currentTheme ? "bg-blue-400/40" : "bg-blue-600/40"
+                  }`}
+                  animate={{
+                    x: [0, 30, 0],
+                    y: [0, -20, 0],
+                    opacity: [0, 0.8, 0],
+                  }}
+                  transition={{
+                    duration: 3 + index * 0.5,
+                    repeat: Infinity,
+                    delay: index * 0.5,
+                    ease: "easeInOut",
+                  }}
+                  style={{
+                    left: `${30 + index * 15}%`,
+                    top: `${40 + index * 10}%`,
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

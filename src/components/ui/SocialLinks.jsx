@@ -22,19 +22,19 @@ const SocialLinks = ({ size = "sm" }) => {
   const socialLinks = [
     {
       name: "GitHub",
-      url: "https://github.com/abhibhardwaj",
+      url: "https://github.com/Abhii-bhardwaj/",
       icon: Github,
       hoverColor: currentTheme ? "hover:bg-gray-700" : "hover:bg-gray-100",
     },
     {
       name: "LinkedIn",
-      url: "https://linkedin.com/in/abhibhardwaj",
+      url: "https://www.linkedin.com/in/abhishek-bhardwaj-31513b279?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app ",
       icon: Linkedin,
       hoverColor: currentTheme ? "hover:bg-blue-900/50" : "hover:bg-blue-100",
     },
     {
       name: "Twitter",
-      url: "https://twitter.com/abhibhardwaj",
+      url: "https://x.com/M_AbhiBhardwaj?t=BkxfIjEz_MW6P7eiImD1Cw&s=09",
       icon: Twitter,
       hoverColor: currentTheme ? "hover:bg-sky-900/50" : "hover:bg-sky-100",
     },

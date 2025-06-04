@@ -35,8 +35,8 @@ const Footer = () => {
                 currentTheme ? "text-white" : "text-gray-900"
               }`}>
               <span
-                className={currentTheme ? "text-blue-400" : "text-blue-600"}>
-                Dev
+                className={ "text-primary" }>
+                Abhishek's&nbsp;
               </span>
               Portfolio
             </div>
