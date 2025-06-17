@@ -20,7 +20,7 @@ function App() {
 
   return (
     <Router>
-      <AnimatePresence mode="wait">
+      {/* <AnimatePresence mode="wait"> */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -36,7 +36,7 @@ function App() {
             <Contact />
           </Layout>
         </motion.div>
-      </AnimatePresence>
+      {/* </AnimatePresence> */}
     </Router>
   );
 }
