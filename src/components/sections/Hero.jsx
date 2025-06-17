@@ -96,7 +96,7 @@ const Hero = () => {
 
   const handleResumeClick = useCallback(() => {
     window.open(
-      "https://drive.google.com/file/d/1K2s3-qPWW9QzbAK7EYTqaZtjJwbX33Kh/view?usp=drive_link"
+      "https://drive.google.com/file/d/1NQnVqE9ozI_m-uRrTjtgJZWj4UyrPMhY/view?usp=drive_link"
     );
   }, []);
 
@@ -156,23 +156,20 @@ const Hero = () => {
             currentTheme
               ? "bg-gray-800/95 border-gray-600/50"
               : "bg-white/95 border-gray-300/50"
-          } border`}
-        >
+          } border`}>
           <div className="flex items-center space-x-2">
             <span
               className={`text-lg ${
                 tech.iconColor ||
                 tech.color ||
                 (currentTheme ? "text-white" : "text-gray-900")
-              }`}
-            >
+              }`}>
               {tech.icon}
             </span>
             <span
               className={`text-sm font-semibold truncate ${
                 tech.color || (currentTheme ? "text-white" : "text-gray-900")
-              }`}
-            >
+              }`}>
               {tech.name}
             </span>
           </div>
@@ -196,13 +193,11 @@ const Hero = () => {
           }}
           className={`flex items-center ${
             currentTheme ? "text-gray-300" : "text-gray-700"
-          }`}
-        >
+          }`}>
           <span
             className={`w-6 text-xs ${
               currentTheme ? "text-gray-500" : "text-gray-400"
-            }`}
-          >
+            }`}>
             {index + 1}
           </span>
           <span
@@ -218,8 +213,7 @@ const Hero = () => {
                   ? "text-green-400"
                   : "text-green-600"
                 : ""
-            }`}
-          >
+            }`}>
             {line}
           </span>
         </motion.div>
@@ -234,8 +228,7 @@ const Hero = () => {
         currentTheme
           ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
           : "bg-gradient-to-br from-blue-50 via-white to-purple-50"
-      }`}
-    >
+      }`}>
       <div className="w-full px-4 sm:px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left Content */}
@@ -244,27 +237,23 @@ const Hero = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible" // Changed to animate for immediate render
-            viewport={{ once: true, margin: "-50px" }}
-          >
+            viewport={{ once: true, margin: "-50px" }}>
             <motion.div
               variants={itemVariants}
               className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 ${
                 currentTheme
                   ? "bg-green-600/20 text-green-400 border-green-500/30"
                   : "bg-green-50 text-green-700 border-green-200"
-              } border`}
-            >
+              } border`}>
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse" />
               Available for Opportunities
-            
             </motion.div>
 
             <motion.div
               variants={itemVariants}
               className={`text-lg mb-4 font-medium ${
                 currentTheme ? "text-blue-400" : "text-blue-600"
-              }`}
-            >
+              }`}>
               <span className="inline-block animate-bounce">👋</span> Hello, I'm
             </motion.div>
 
@@ -272,13 +261,11 @@ const Hero = () => {
               variants={itemVariants}
               className={`text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight ${
                 currentTheme ? "text-white" : "text-gray-900"
-              }`}
-            >
+              }`}>
               <span
                 className={`${
                   currentTheme ? "text-blue-400" : "text-blue-600"
-                } relative`}
-              >
+                } relative`}>
                 Abhishek
                 <motion.div
                   className={`absolute -top-2 -right-2 ${
@@ -289,8 +276,7 @@ const Hero = () => {
                     duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut",
-                  }}
-                >
+                  }}>
                   <Sparkles size={24} />
                 </motion.div>
               </span>{" "}
@@ -301,13 +287,11 @@ const Hero = () => {
               variants={itemVariants}
               className={`text-xl sm:text-2xl lg:text-3xl mb-6 font-medium min-h-[40px] ${
                 currentTheme ? "text-gray-300" : "text-gray-700"
-              }`}
-            >
+              }`}>
               <span
                 className={`${
                   currentTheme ? "text-purple-400" : "text-purple-600"
-                }`}
-              >
+                }`}>
                 {displayText}
               </span>
               <span className="animate-pulse">|</span>
@@ -317,16 +301,14 @@ const Hero = () => {
               variants={itemVariants}
               className={`text-lg mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed ${
                 currentTheme ? "text-gray-300" : "text-gray-700"
-              }`}
-            >
+              }`}>
               I craft{" "}
               <span
                 className={`${
                   currentTheme
                     ? "text-blue-400 font-semibold"
                     : "text-blue-600 font-semibold"
-                } relative`}
-              >
+                } relative`}>
                 pixel-perfect
               </span>{" "}
               and{" "}
@@ -335,8 +317,7 @@ const Hero = () => {
                   currentTheme
                     ? "text-cyan-400 font-semibold"
                     : "text-cyan-600 font-semibold"
-                }`}
-              >
+                }`}>
                 lightning-fast
               </span>{" "}
               web experiences that drive results. Specialized in{" "}
@@ -347,8 +328,7 @@ const Hero = () => {
 
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8"
-            >
+              className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8">
               <motion.button
                 onClick={handleResumeClick}
                 whileHover={{ scale: 1.02, y: -1 }}
@@ -358,8 +338,7 @@ const Hero = () => {
                   currentTheme
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white focus:ring-blue-500/50 shadow-2xl shadow-blue-500/25"
                     : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white focus:ring-blue-500/50 shadow-2xl shadow-blue-500/25"
-                }`}
-              >
+                }`}>
                 <Download
                   size={20}
                   className="mr-2 group-hover:animate-bounce"
@@ -380,8 +359,7 @@ const Hero = () => {
                   currentTheme
                     ? "border-2 border-gray-500 text-gray-300 hover:bg-gray-700/50 hover:border-gray-400 focus:ring-gray-500/50"
                     : "border-2 border-gray-300 text-gray-700 hover:bg-gray-50/50 hover:border-gray-400 focus:ring-gray-300/50"
-                }`}
-              >
+                }`}>
                 Let's Connect
                 <Code
                   size={16}
@@ -397,8 +375,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }} // Changed to animate for immediate render
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5 }}
-          >
+            transition={{ duration: 0.5 }}>
             <div className="relative w-80 h-80 sm:w-96 sm:h-96 max-w-full">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -408,15 +385,13 @@ const Hero = () => {
                   currentTheme
                     ? "bg-gray-900/95 border-gray-700/50"
                     : "bg-white/95 border-gray-200/50"
-                } backdrop-blur-sm shadow-2xl border`}
-              >
+                } backdrop-blur-sm shadow-2xl border`}>
                 <div
                   className={`flex items-center px-4 py-3 ${
                     currentTheme
                       ? "bg-gray-800/90 border-gray-700/50"
                       : "bg-gray-100/90 border-gray-200/50"
-                  } border-b`}
-                >
+                  } border-b`}>
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 rounded-full bg-red-500" />
                     <div className="w-3 h-3 rounded-full bg-yellow-500" />
@@ -425,8 +400,7 @@ const Hero = () => {
                   <div
                     className={`flex items-center ml-4 ${
                       currentTheme ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
+                    }`}>
                     <Terminal size={16} className="mr-2" />
                     <span className="text-sm font-mono">developer.js</span>
                   </div>
