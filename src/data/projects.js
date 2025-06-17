@@ -35,10 +35,10 @@ export const projects = [
     title: "News Application",
     description:
       "A dynamic news aggregator web application developed using React and NewsAPI. It provides real-time news updates across multiple categories such as technology, business, health, and sports. Features include a search bar, category filters, dark mode, and infinite scroll for seamless content discovery. The UI is fast, user-friendly, and built for optimal readability across all devices.",
-    image: "/api/placeholder/600/400",
+    image: "/news-app.png",
     tech: ["React.js", "Tailwind CSS", "NewsAPI", "Zustand"],
     liveUrl: "#",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Abhii-bhardwaj/News-App",
     featured: true,
   },
 

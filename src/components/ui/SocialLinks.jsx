@@ -1,78 +1,59 @@
-// SocialLinks.jsx - Redesigned with theme support
-import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { memo } from "react";
 import { motion } from "framer-motion";
+import { Github, Linkedin, Twitter, Mail } from "lucide-react";
 import useThemeStore from "../../Stores/useThemeStore";
+import { socialLinks } from "../../data/socialLinks";
 
-const SocialLinks = ({ size = "sm" }) => {
-  const { isDarkMode, darkMode } = useThemeStore();
-  const currentTheme = isDarkMode || darkMode;
+// CSS constants
+const BASE_CLASSES = {
+  container: "flex space-x-3",
+  link: "rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-500/50",
+  darkLink:
+    "bg-gray-800 text-gray-300 hover:text-white shadow-md shadow-gray-900/50",
+  lightLink:
+    "bg-white text-gray-600 hover:text-gray-900 shadow-md shadow-gray-200/50",
+  sizes: {
+    sm: "w-9 h-9",
+    md: "w-11 h-11",
+    lg: "w-13 h-13",
+  },
+  iconSizes: {
+    sm: 16,
+    md: 20,
+    lg: 24,
+  },
+};
 
-  const sizeClasses = {
-    sm: "w-10 h-10",
-    md: "w-12 h-12",
-    lg: "w-14 h-14",
-  };
-
-  const iconSizes = {
-    sm: 18,
-    md: 22,
-    lg: 26,
-  };
-
-  const socialLinks = [
-    {
-      name: "GitHub",
-      url: "https://github.com/Abhii-bhardwaj/",
-      icon: Github,
-      hoverColor: currentTheme ? "hover:bg-gray-700" : "hover:bg-gray-100",
-    },
-    {
-      name: "LinkedIn",
-      url: "https://www.linkedin.com/in/abhishek-bhardwaj-31513b279?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app ",
-      icon: Linkedin,
-      hoverColor: currentTheme ? "hover:bg-blue-900/50" : "hover:bg-blue-100",
-    },
-    {
-      name: "Twitter",
-      url: "https://x.com/M_AbhiBhardwaj?t=BkxfIjEz_MW6P7eiImD1Cw&s=09",
-      icon: Twitter,
-      hoverColor: currentTheme ? "hover:bg-sky-900/50" : "hover:bg-sky-100",
-    },
-    {
-      name: "Email",
-      url: "mailto:abhibhardwaj622@gmail.com",
-      icon: Mail,
-      hoverColor: currentTheme ? "hover:bg-green-900/50" : "hover:bg-green-100",
-    },
-  ];
+const SocialLinks = memo(({ size = "sm" }) => {
+  const { isDarkMode = false } = useThemeStore();
+  const validSize = BASE_CLASSES.sizes[size] ? size : "sm";
 
   return (
-    <div className="flex space-x-4">
+    <div className={BASE_CLASSES.container}>
       {socialLinks.map((link, index) => (
         <motion.a
           key={link.name}
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
-          whileHover={{ scale: 1.1, y: -3 }}
-          whileTap={{ scale: 0.95 }}
-          className={`${
-            sizeClasses[size]
-          } rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50 ${
-            currentTheme
-              ? "bg-gray-800 text-gray-300 hover:text-white shadow-lg shadow-gray-900/50"
-              : "bg-white text-gray-600 hover:text-gray-900 shadow-lg shadow-gray-200/50"
-          } ${link.hoverColor}`}
-          aria-label={link.name}>
-          <link.icon size={iconSizes[size]} />
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.3, delay: index * 0.08 }}
+          whileHover={{ scale: 1.05, y: -2, transition: { duration: 0.15 } }}
+          whileTap={{ scale: 0.97 }}
+          className={`${BASE_CLASSES.link} ${BASE_CLASSES.sizes[validSize]} ${
+            isDarkMode ? BASE_CLASSES.darkLink : BASE_CLASSES.lightLink
+          } ${link.hoverColor(isDarkMode)}`}
+          aria-label={`Visit my ${link.name} profile`}
+          tabIndex={0}>
+          <link.icon size={BASE_CLASSES.iconSizes[validSize]} />
         </motion.a>
       ))}
     </div>
   );
-};
+});
+
+SocialLinks.displayName = "SocialLinks";
 
 export default SocialLinks;

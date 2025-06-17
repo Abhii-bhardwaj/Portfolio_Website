@@ -1,146 +1,175 @@
-// src/components/sections/Experience.jsx
+import React, { memo, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
+import { Book, Rocket, Zap, Award } from "lucide-react";
 import SectionHeading from "../shared/SectionHeading";
 import Timeline from "../ui/Timeline";
 import experienceData from "../../data/experiences";
 import useThemeStore from "../../Stores/useThemeStore";
 
-const Experience = () => {
-  const { isDarkMode, darkMode } = useThemeStore();
-  const currentTheme = isDarkMode || darkMode;
+// Theme configuration
+const themeConfig = {
+  dark: {
+    section: "bg-gradient-to-br from-gray-900 to-gray-800",
+    container: "bg-gray-800/50 border-gray-700/30",
+    stat: "bg-gray-800/70 hover:bg-gray-700/90 hover:shadow-blue-500/20",
+    cta: "bg-gradient-to-r from-blue-600/70 to-purple-800/70 border-gray-700/30",
+    button: "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20",
+    heading: "text-white",
+    text: "text-gray-300",
+    glow: "bg-blue-600",
+  },
+  light: {
+    section: "bg-gradient-to-br from-blue-50 to-purple-50",
+    container: "bg-white/80 border-gray-200/30",
+    stat: "bg-white/80 hover:bg-white hover:shadow-blue-500/20",
+    cta: "bg-gradient-to-r from-blue-500/70 to-purple-500/70 border-gray-200/30",
+    button: "bg-blue-500 hover:bg-blue-600 text-white shadow-blue-500/20",
+    heading: "text-gray-900",
+    text: "text-gray-700",
+    glow: "bg-blue-400",
+  },
+};
+
+// CSS constants
+const BASE_CLASSES = {
+  section: "py-16 transition-colors duration-200",
+  container: "relative p-6 rounded-xl shadow-lg backdrop-blur-sm",
+  stat: "text-center p-4 rounded-lg shadow-md transition-all duration-150",
+  cta: "mt-10 p-6 rounded-xl text-center shadow-lg",
+  button:
+    "px-6 py-2 rounded-lg font-semibold transition-all duration-150 focus:ring-4 focus:ring-blue-500/50",
+  heading: "text-lg font-bold mb-3",
+  text: "text-sm mb-4 max-w-xl mx-auto",
+};
+
+const Experience = memo(() => {
+  const { isDarkMode = false } = useThemeStore() || {};
+  const currentTheme = isDarkMode ? themeConfig.dark : themeConfig.light;
+
+  const stats = useMemo(
+    () => [
+      {
+        number: "2+",
+        label: "Years Learning",
+        icon: Book,
+        color: "text-blue-400",
+      },
+      {
+        number: "5+",
+        label: "Projects Built",
+        icon: Rocket,
+        color: "text-purple-400",
+      },
+      {
+        number: "8+",
+        label: "Technologies",
+        icon: Zap,
+        color: "text-yellow-400",
+      },
+      {
+        number: "100%",
+        label: "Dedication",
+        icon: Award,
+        color: "text-green-400",
+      },
+    ],
+    []
+  );
+
+  const handleCtaClick = useCallback(() => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.warn("Contact section not found");
+    }
+  }, []);
 
   return (
     <section
       id="experience"
-      className={`py-20 transition-colors duration-300 ${
-        currentTheme
-          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-          : "bg-gradient-to-br from-blue-50 via-white to-purple-50"
-      }`}>
+      className={`${BASE_CLASSES.section} ${currentTheme.section}`}>
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading title="Experience & Education" />
-
-        {/* Enhanced Timeline Container */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className={`relative p-8 rounded-2xl ${
-            currentTheme
-              ? "bg-gray-800/30 backdrop-blur-sm border border-gray-700/50"
-              : "bg-white/50 backdrop-blur-sm border border-gray-200/50"
-          } shadow-2xl`}>
-          {/* Decorative Background Elements */}
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.4 }}
+          className={`${BASE_CLASSES.container} ${currentTheme.container}`}>
           <div
-            className={`absolute top-0 left-0 w-32 h-32 rounded-full opacity-10 ${
-              currentTheme ? "bg-blue-500" : "bg-blue-400"
-            } blur-2xl`}></div>
-          <div
-            className={`absolute bottom-0 right-0 w-24 h-24 rounded-full opacity-10 ${
-              currentTheme ? "bg-purple-500" : "bg-purple-400"
-            } blur-2xl`}></div>
-
-          <Timeline items={experienceData} />
+            className={`absolute top-0 left-0 w-20 h-20 rounded-full opacity-10 blur-xl ${currentTheme.glow}`}
+          />
+          {experienceData.length ? (
+            <Timeline items={experienceData} />
+          ) : (
+            <p
+              className={`text-sm text-center ${
+                isDarkMode ? "text-gray-400" : "text-gray-600"
+              }`}>
+              No experience data available.
+            </p>
+          )}
         </motion.div>
-
-        {/* Achievement Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-          {[
-            { number: "2+", label: "Years Learning", icon: "📚" },
-            { number: "5+", label: "Projects Built", icon: "🚀" },
-            { number: "8+", label: "Technologies", icon: "⚡" },
-            { number: "100%", label: "Dedication", icon: "💪" },
-          ].map((stat, index) => (
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+          {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-                type: "spring",
-                stiffness: 100,
-              }}
-              className={`text-center p-6 rounded-2xl transition-all duration-300 ${
-                currentTheme
-                  ? "bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-700/80 hover:shadow-2xl hover:shadow-blue-500/20"
-                  : "bg-white/80 backdrop-blur-sm border border-gray-200/50 hover:bg-white hover:shadow-2xl hover:shadow-blue-500/20"
-              } shadow-lg group cursor-pointer`}>
-              <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                {stat.icon}
-              </div>
-
-              <motion.div
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 0.8, delay: index * 0.1 + 0.5 }}
-                className={`text-2xl md:text-3xl font-bold mb-2 ${
-                  currentTheme ? "text-blue-400" : "text-blue-600"
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              className={`${BASE_CLASSES.stat} ${currentTheme.stat}`}
+              role="listitem"
+              tabIndex={0}
+              aria-describedby={`stat-${index}`}>
+              <stat.icon
+                size={24}
+                className={`mx-auto mb-2 ${stat.color} group-hover:scale-105 transition-transform duration-150`}
+              />
+              <div
+                id={`stat-${index}`}
+                className={`text-lg font-bold mb-1 ${
+                  isDarkMode ? "text-blue-400" : "text-blue-600"
                 }`}>
                 {stat.number}
-              </motion.div>
-
-              <div
-                className={`font-medium ${
-                  currentTheme ? "text-gray-300" : "text-gray-700"
-                }`}>
+              </div>
+              <div className={`text-xs font-medium ${currentTheme.text}`}>
                 {stat.label}
               </div>
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Call to Action */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className={`mt-16 p-8 rounded-2xl text-center ${
-            currentTheme
-              ? "bg-gradient-to-r from-blue-900/50 to-purple-900/50 backdrop-blur-sm border border-gray-700/50"
-              : "bg-gradient-to-r from-blue-50/80 to-purple-50/80 backdrop-blur-sm border border-gray-200/50"
-          } shadow-xl`}>
-          <h3
-            className={`text-2xl font-bold mb-4 ${
-              currentTheme ? "text-white" : "text-gray-900"
-            }`}>
-            Ready for New Opportunities
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className={`${BASE_CLASSES.cta} ${currentTheme.cta}`}>
+          <h3 className={`${BASE_CLASSES.heading} ${currentTheme.heading}`}>
+            Seeking New Challenges
           </h3>
-
-          <p
-            className={`text-lg mb-6 max-w-2xl mx-auto ${
-              currentTheme ? "text-gray-300" : "text-gray-700"
-            }`}>
-            I'm actively seeking internship and full-time opportunities where I
-            can contribute my skills while continuing to learn and grow as a
-            developer.
+          <p className={`${BASE_CLASSES.text} ${currentTheme.text}`}>
+            Eager to join innovative teams as an intern or full-time developer,
+            bringing creativity and technical expertise.
           </p>
-
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              const contactSection = document.getElementById("contact");
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
-              currentTheme
-                ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25"
-                : "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25"
-            } focus:outline-none focus:ring-4 focus:ring-blue-500/50`}>
+            onClick={handleCtaClick}
+            className={`${BASE_CLASSES.button} ${currentTheme.button}`}
+            aria-label="Scroll to contact section">
             Let's Connect
           </motion.button>
         </motion.div>
       </div>
     </section>
   );
-};
+});
 
 export default Experience;
