@@ -22,9 +22,7 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen font-sans bg-background text-text transition-colors duration-200">
       <Header />
-      <main className="md:pt-20 pt-16">
-        {children}
-      </main>
+      <main className="md:pt-20 pt-16">{children}</main>
       <Footer />
     </div>
   );

@@ -55,9 +55,9 @@ const Footer = () => {
               }`}>
               <span
                 className={currentTheme ? "text-blue-400" : "text-blue-500"}>
-                Abhishek's{" "}
+                Abhishek{" "}
               </span>
-              Portfolio
+              Bhardwaj
             </div>
             <p
               className={`${BASE_CLASSES.text} ${

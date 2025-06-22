@@ -23,7 +23,8 @@ const styles = {
   },
   base: {
     header: "fixed top-0 left-0 right-0 z-50 py-2",
-    container: "container mx-auto px-2 sm:px-4 flex justify-between items-center",
+    container:
+      "container mx-auto px-2 sm:px-4 flex justify-between items-center",
     logo: "text-sm sm:text-base font-bold",
     nav: "hidden md:flex items-center space-x-3",
     navLink:
@@ -46,6 +47,7 @@ const navLinks = [
   { name: "Skills", href: "skills" },
   { name: "Projects", href: "projects" },
   { name: "Experience", href: "experience" },
+  { name: "Achievements", href: "achievements" },
   { name: "Contact", href: "contact" },
 ];
 
@@ -106,10 +108,9 @@ const Header = memo(() => {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
-            className={styles.base.logo}
-          >
-            <span className="text-blue-500">Abhishek's </span>
-            <span className={theme.logo}>Portfolio</span>
+            className={styles.base.logo}>
+            <span className="text-blue-500">Abhishek </span>
+            <span className={theme.logo}>Bhardwaj</span>
           </motion.div>
           <nav className={styles.base.nav}>
             {navLinks.map((link) => (
@@ -119,8 +120,7 @@ const Header = memo(() => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => scrollToSection(link.href)}
-                className={`${styles.base.navLink} ${theme.nav}`}
-              >
+                className={`${styles.base.navLink} ${theme.nav}`}>
                 {link.name}
                 <span className={styles.base.underline} />
               </motion.button>
@@ -131,8 +131,7 @@ const Header = memo(() => {
               transition={{ duration: 0.3, delay: 0.1 }} // Added delay
               onClick={toggleThemeAndClass}
               className={`${styles.base.button} ${theme.button} `} // Ensure button visibility
-              aria-label={isDarkMode ? "Light mode" : "Dark mode"}
-            >
+              aria-label={isDarkMode ? "Light mode" : "Dark mode"}>
               {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
             </motion.button>
           </nav>
@@ -143,8 +142,7 @@ const Header = memo(() => {
               transition={{ duration: 0.3, delay: 0.1 }}
               onClick={toggleThemeAndClass}
               className={`${styles.base.button} ${theme.button} min-w-[32px] min-h-[32px]`}
-              aria-label={isDarkMode ? "Light mode" : "Dark mode"}
-            >
+              aria-label={isDarkMode ? "Light mode" : "Dark mode"}>
               {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
             </motion.button>
             <motion.button
@@ -153,8 +151,7 @@ const Header = memo(() => {
               transition={{ duration: 0.3, delay: 0.1 }}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`${styles.base.button} ${theme.nav} min-w-[32px] min-h-[32px]`}
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            >
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}>
               {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
             </motion.button>
           </div>
@@ -176,17 +173,14 @@ const Header = memo(() => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.2 }}
-              className={`${styles.base.mobile} ${theme.mobile}`}
-            >
+              className={`${styles.base.mobile} ${theme.mobile}`}>
               <div
-                className={`flex items-center justify-between p-3 border-b ${theme.mobile}`}
-              >
+                className={`flex items-center justify-between p-3 border-b ${theme.mobile}`}>
                 <div className="text-sm font-bold text-blue-500">Menu</div>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
                   className={`${styles.base.button} ${theme.nav}`}
-                  aria-label="Close menu"
-                >
+                  aria-label="Close menu">
                   <X size={16} />
                 </button>
               </div>
@@ -195,14 +189,13 @@ const Header = memo(() => {
                   <button
                     key={link.name}
                     onClick={() => scrollToSection(link.href)}
-                    className={`${styles.base.mobileLink} ${theme.mobileNav}`}
-                  >
+                    className={`${styles.base.mobileLink} ${theme.mobileNav}`}>
                     {link.name}
                   </button>
                 ))}
               </nav>
               <div className={`${styles.base.footer} ${theme.mobile}`}>
-                Abhishek's Portfolio
+                Abhishek Bhardwaj
               </div>
             </motion.div>
           </>
