@@ -143,7 +143,7 @@ const Achievements = () => {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <SectionHeading title="Achievements Gallery" />
+        <SectionHeading title="Achievements & Certifications" />
 
         {/* Carousel Container */}
         <div className="relative max-w-6xl mx-auto">
