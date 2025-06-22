@@ -1,167 +1,293 @@
 import { motion } from "framer-motion";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState, useCallback } from "react";
 import SectionHeading from "../shared/SectionHeading";
-import { Code, Paintbrush, Circle } from "lucide-react"; // Specific icons
-import skillsData from "../../data/skills";
+import {
+  Code,
+  Atom,
+  FileCode,
+  LayoutTemplate,
+  Settings2,
+  Github,
+  Smartphone,
+  PlugZap,
+  Move3D,
+  Zap,
+  Box,
+  Hexagon,
+  ImagePlus,
+  Triangle,
+  Paintbrush,
+  Circle,
+  Database,
+  Wifi,
+  Palette,
+  Globe,
+  Container,
+  TestTube,
+  Key,
+  CheckCircle,
+  FileType,
+  Grid3X3,
+  Layers,
+} from "lucide-react";
+import { skillCategories, skills as allSkills } from "../../data/skills";
 import useThemeStore from "../../Stores/useThemeStore";
 
-// CSS constants
-const BASE_CLASSES = {
-  section: "py-20 transition-all duration-200",
-  darkSection: "bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800",
-  lightSection: "bg-gradient-to-br from-gray-50 via-white to-blue-50",
-  card: "relative p-6 rounded-2xl text-center cursor-pointer transition-all duration-200 shadow-lg",
+// Optimized CSS constants
+const CLASSES = {
+  section: "py-16 transition-colors duration-300",
+  darkBg: "bg-gradient-to-br from-gray-900 to-gray-800",
+  lightBg: "bg-gradient-to-br from-gray-50 to-blue-50",
+  card: "relative p-4 rounded-xl cursor-pointer transition-all duration-300 group",
   darkCard:
-    "bg-gray-800/60 backdrop-blur-sm border-gray-700/50 hover:bg-gray-700/80 hover:shadow-2xl hover:shadow-blue-500/20",
+    "bg-gray-800/50 border border-gray-700/30 hover:bg-gray-700/60 hover:border-gray-600/50",
   lightCard:
-    "bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white hover:shadow-2xl hover:shadow-blue-500/20",
-  summary: "mt-16 p-8 rounded-2xl text-center shadow-xl",
-  darkSummary: "bg-gray-800/60 backdrop-blur-sm border-gray-700/50",
-  lightSummary: "bg-white/80 backdrop-blur-sm border-gray-200/50",
+    "bg-white/70 border border-gray-200/50 hover:bg-white hover:border-gray-300/60",
+  categoryBtn:
+    "px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2",
+  activeCategoryBtn: "bg-blue-500 text-white shadow-md",
+  inactiveCategoryBtn: "hover:bg-gray-100 dark:hover:bg-gray-700",
 };
 
-// Gradient map for skill bars
-const GRADIENT_MAP = {
-  blue: "from-blue-500 to-blue-600",
-  green: "from-green-500 to-green-600",
-  yellow: "from-yellow-500 to-yellow-600",
-  red: "from-red-500 to-red-600",
-  purple: "from-purple-500 to-purple-600",
-  pink: "from-pink-500 to-pink-600",
-  indigo: "from-indigo-500 to-indigo-600",
-  cyan: "from-cyan-500 to-cyan-600",
-  default: "from-gray-500 to-gray-600",
-};
-
-// Icon map for lucide-react
-const ICON_MAP = {
-  Code: Code,
-  Paintbrush: Paintbrush,
-  // Add more icons as needed based on skillsData
+// Optimized icon mapping
+const ICONS = {
+  Code,
+  Atom,
+  FileCode,
+  LayoutTemplate,
+  Settings2,
+  Github,
+  Smartphone,
+  PlugZap,
+  Move3D,
+  Zap,
+  Box,
+  Hexagon,
+  ImagePlus,
+  Triangle,
+  Paintbrush,
+  Database,
+  Wifi,
+  Palette,
+  Globe,
+  Container,
+  TestTube,
+  Key,
+  CheckCircle,
+  FileType,
+  Grid3X3,
+  Layers,
   Default: Circle,
 };
 
+// Level to percentage mapping
+const LEVEL_MAP = { Advanced: 90, Intermediate: 70, Beginner: 50 };
+
+// Optimized SkillCard with minimal animations
+const SkillCard = memo(({ skill, index, isVisible = true }) => {
+  const { isDarkMode } = useThemeStore();
+
+  if (!isVisible) return null;
+
+  const Icon = ICONS[skill.icon] || ICONS.Default;
+  const percentage = LEVEL_MAP[skill.level] || 50;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3, delay: index * 0.02 }}
+      whileHover={{ y: -2, scale: 1.02 }}
+      className={`${CLASSES.card} ${
+        isDarkMode ? CLASSES.darkCard : CLASSES.lightCard
+      }`}>
+      {/* Icon */}
+      <div
+        className={`w-10 h-10 mx-auto rounded-lg flex items-center justify-center text-white mb-2 ${skill.color}`}>
+        <Icon size={20} />
+      </div>
+
+      {/* Name */}
+      <h3
+        className={`font-medium text-sm mb-1 ${
+          isDarkMode ? "text-gray-200" : "text-gray-800"
+        }`}>
+        {skill.name}
+      </h3>
+
+      {/* Progress Bar */}
+      <div
+        className={`w-full h-1.5 rounded-full ${
+          isDarkMode ? "bg-gray-700" : "bg-gray-200"
+        }`}>
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${percentage}%` }}
+          transition={{ duration: 0.8, delay: index * 0.02 + 0.2 }}
+          className={`h-full rounded-full ${skill.color
+            .replace("bg-", "bg-gradient-to-r from-")
+            .replace(/-([\d]+)/, "-$1 to-$1")}`}
+        />
+      </div>
+
+      {/* Level Badge */}
+      <span
+        className={`text-xs mt-1 px-2 py-0.5 rounded-full ${
+          skill.level === "Advanced"
+            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+            : skill.level === "Intermediate"
+            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+            : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+        }`}>
+        {skill.level}
+      </span>
+    </motion.div>
+  );
+});
+
 const Skills = () => {
-  const { isDarkMode = false } = useThemeStore();
-  const currentTheme = useMemo(() => isDarkMode, [isDarkMode]);
+  const { isDarkMode } = useThemeStore();
+  const [activeCategory, setActiveCategory] = useState("all");
 
-  // Memoized skill cards
-  const skillCards = useMemo(
-    () =>
-      skillsData.map((skill, index) => {
-        const LucideIcon = ICON_MAP[skill.icon] || ICON_MAP.Default;
-        const gradient =
-          Object.keys(GRADIENT_MAP).find((key) =>
-            skill.color.toLowerCase().includes(key)
-          ) || "default";
+  // Optimized category filtering
+  const filteredSkills = useMemo(() => {
+    if (activeCategory === "all") return allSkills;
+    const category = skillCategories.find(
+      (cat) => cat.category === activeCategory
+    );
+    return category ? category.skills : [];
+  }, [activeCategory]);
 
-        return (
-          <motion.div
-            key={skill.name}
-            initial={{ opacity: 0, y: 30, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{
-              duration: 0.5,
-              delay: index * 0.05,
-              type: "spring",
-              stiffness: 120,
-            }}
-            whileHover={{ y: -6, scale: 1.03 }}
-            className={`${BASE_CLASSES.card} ${
-              currentTheme ? BASE_CLASSES.darkCard : BASE_CLASSES.lightCard
-            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            role="listitem"
-            tabIndex={0}
-            aria-label={`Skill: ${skill.name}, proficiency ${
-              skill.level || 50
-            }%`}>
-            <div
-              className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
-                currentTheme
-                  ? "bg-gradient-to-r from-blue-600/10 to-purple-600/10"
-                  : "bg-gradient-to-r from-blue-500/10 to-purple-500/10"
-              }`}
-            />
-            <motion.div
-              whileHover={{ rotate: [0, -5, 5, 0] }}
-              transition={{ duration: 0.4 }}
-              className={`relative w-14 h-14 mx-auto rounded-xl flex items-center justify-center text-white mb-3 ${skill.color} group-hover:scale-105 shadow-md`}>
-              <LucideIcon size={24} />
-            </motion.div>
-            <h3
-              className={`font-semibold text-base ${
-                currentTheme
-                  ? "text-gray-200 group-hover:text-white"
-                  : "text-gray-800 group-hover:text-gray-900"
-              }`}>
-              {skill.name}
-            </h3>
-            <div className="mt-2">
-              <div
-                className={`w-full h-2 rounded-full ${
-                  currentTheme ? "bg-gray-700" : "bg-gray-200"
-                }`}>
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.level || 50}%` }}
-                  transition={{ duration: 0.8, delay: index * 0.05 + 0.3 }}
-                  className={`h-full rounded-full bg-gradient-to-r ${GRADIENT_MAP[gradient]}`}
-                />
-              </div>
-            </div>
-            <motion.div
-              animate={{ y: [0, -4, 0], opacity: [0.4, 0.8, 0.4] }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: index * 0.1,
-              }}
-              className={`absolute top-2 right-2 w-1.5 h-1.5 rounded-full ${
-                currentTheme ? "bg-blue-400" : "bg-blue-500"
-              } opacity-0 group-hover:opacity-50`}
-            />
-          </motion.div>
-        );
-      }),
-    [currentTheme]
+  // Optimized category change handler
+  const handleCategoryChange = useCallback((category) => {
+    setActiveCategory(category);
+  }, []);
+
+  // Compact category tabs
+  const categoryTabs = useMemo(
+    () => [
+      { id: "all", name: "All", icon: Grid3X3, count: allSkills.length },
+      ...skillCategories.map((cat) => ({
+        id: cat.category,
+        name: cat.category.split(" ")[0], // First word only
+        icon: ICONS[cat.icon] || ICONS.Default,
+        count: cat.skills.length,
+      })),
+    ],
+    []
   );
 
   return (
     <section
-      id="skills"
-      className={`${BASE_CLASSES.section} ${
-        currentTheme ? BASE_CLASSES.darkSection : BASE_CLASSES.lightSection
+      className={`${CLASSES.section} ${
+        isDarkMode ? CLASSES.darkBg : CLASSES.lightBg
       }`}>
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading
           title="My Skills"
-          description="Here are the technologies and tools I work with daily. I'm always learning to stay updated with the latest trends."
+          description="Technologies and tools I work with daily"
         />
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {skillCards}
+
+        {/* Compact Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {categoryTabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeCategory === tab.id;
+
+            return (
+              <button
+                key={tab.id}
+                onClick={() => handleCategoryChange(tab.id)}
+                className={`${CLASSES.categoryBtn} ${
+                  isActive
+                    ? CLASSES.activeCategoryBtn
+                    : `${CLASSES.inactiveCategoryBtn} ${
+                        isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`
+                }`}>
+                <Icon size={16} />
+                <span className="text-sm">{tab.name}</span>
+                <span
+                  className={`text-xs px-1.5 py-0.5 rounded-full ${
+                    isActive
+                      ? "bg-white/20"
+                      : isDarkMode
+                      ? "bg-gray-700"
+                      : "bg-gray-200"
+                  }`}>
+                  {tab.count}
+                </span>
+              </button>
+            );
+          })}
         </div>
+
+        {/* Skills Grid - Optimized Layout */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          key={activeCategory}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3">
+          {filteredSkills.map((skill, index) => (
+            <SkillCard
+              key={`${activeCategory}-${skill.name}`}
+              skill={skill}
+              index={index}
+              isVisible={true}
+            />
+          ))}
+        </motion.div>
+
+        {/* Quick Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20px" }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className={`${BASE_CLASSES.summary} ${
-            currentTheme ? BASE_CLASSES.darkSummary : BASE_CLASSES.lightSummary
-          }`}>
-          <h3
-            className={`text-xl font-bold mb-3 ${
-              currentTheme ? "text-white" : "text-gray-900"
-            }`}>
-            Always Learning & Growing
-          </h3>
-          <p
-            className={`text-base leading-relaxed max-w-2xl mx-auto ${
-              currentTheme ? "text-gray-300" : "text-gray-700"
-            }`}>
-            Technology evolves fast, and I keep up by exploring new frameworks,
-            attending workshops, and contributing to open-source projects.
-          </p>
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-12 text-center">
+          <div className="flex justify-center items-center gap-6 flex-wrap">
+            <div
+              className={`px-4 py-2 rounded-lg ${
+                isDarkMode ? "bg-gray-800/50" : "bg-white/70"
+              }`}>
+              <span
+                className={`text-sm ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}>
+                Showing{" "}
+                <span className="font-semibold text-blue-500">
+                  {filteredSkills.length}
+                </span>{" "}
+                skills
+              </span>
+            </div>
+            <div
+              className={`px-4 py-2 rounded-lg ${
+                isDarkMode ? "bg-gray-800/50" : "bg-white/70"
+              }`}>
+              <span
+                className={`text-sm ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}>
+                <span className="font-semibold text-green-500">
+                  {filteredSkills.filter((s) => s.level === "Advanced").length}
+                </span>{" "}
+                Advanced
+              </span>
+            </div>
+            <div
+              className={`px-4 py-2 rounded-lg ${
+                isDarkMode ? "bg-gray-800/50" : "bg-white/70"
+              }`}>
+              <span
+                className={`text-sm ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}>
+                Always learning & growing 🚀
+              </span>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

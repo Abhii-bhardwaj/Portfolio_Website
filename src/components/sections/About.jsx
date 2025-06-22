@@ -7,15 +7,16 @@ import useThemeStore from "../../Stores/useThemeStore";
 const INFO_DATA = [
   { label: "Name", value: "Abhishek Bhardwaj", icon: "👨‍💻" },
   { label: "Email", value: "abhibhardwaj622@gmail.com", icon: "📧" },
-  { label: "Education", value: "BCA (Final Year)", icon: "🎓" },
+  { label: "Education", value: "BCA", icon: "🎓" },
   { label: "Location", value: "Agra, India", icon: "📍" },
 ];
 
 const PARAGRAPH_CONTENT = [
-  "I'm a final-year BCA student with a strong passion for building beautiful and functional web experiences. What started as curiosity with HTML and CSS soon turned into a deep interest in front-end development.",
-  "I specialize in building modern, responsive interfaces using React.js and Tailwind CSS, focusing on both visual appeal and optimal user experience.",
-  "Always learning new technologies and contributing to the developer community. Let's connect and build something amazing together!",
+  "I'm a recent BCA graduate with a strong passion for building beautiful and functional web experiences. What started as curiosity with HTML and CSS has evolved into expertise in modern front-end development.",
+  "I specialize in creating responsive, interactive web applications using React.js, Next.js, and Tailwind CSS. My focus is on crafting seamless user experiences with clean, maintainable code and cutting-edge technologies like Three.js for 3D web experiences.",
+  "As a fresh graduate entering the tech industry, I'm eager to contribute to innovative projects and collaborate with teams that value creativity and technical excellence. Let's connect and build something amazing together!",
 ];
+
 
 // CSS constants
 const BASE_CLASSES = {
@@ -300,12 +301,12 @@ const About = () => {
                 className={`text-2xl lg:text-3xl font-bold mb-6 ${
                   currentTheme ? "text-white" : "text-gray-900"
                 }`}>
-                BCA Final Year Student &
+                BCA {}
                 <span
-                  className={`block mt-1 ${
+                  className={` mt-1 ${
                     currentTheme ? "text-blue-400" : "text-blue-600"
                   }`}>
-                  Self-taught Frontend Developer
+                  Graduate | 2025
                 </span>
               </motion.h3>
               <ParagraphContent currentTheme={currentTheme} />
