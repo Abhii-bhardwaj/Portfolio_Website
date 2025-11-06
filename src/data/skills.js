@@ -1,11 +1,36 @@
-// Frontend Technologies
+// data/skills.js
+import {
+  Code,
+  Atom,
+  FileCode,
+  LayoutTemplate,
+  Settings2,
+  Github,
+  PlugZap,
+  Move3D,
+  Zap,
+  Box,
+  Hexagon,
+  Triangle,
+  Paintbrush,
+  Database,
+  Wifi,
+  Palette,
+  Globe,
+  Key,
+  FileType,
+  Grid3X3,
+  Wrench,
+  Monitor,
+  Server,
+  Circle,
+} from "lucide-react";
+
+/* ------------------------------------------------------------------ */
+/*  Individual skill groups – keep them for easy maintenance          */
+/* ------------------------------------------------------------------ */
 export const frontendSkills = [
-  {
-    name: "React.js",
-    icon: "Atom",
-    color: "bg-blue-500",
-    level: "Advanced",
-  },
+  { name: "React.js", icon: "Atom", color: "bg-blue-500", level: "Advanced" },
   {
     name: "Next.js",
     icon: "Triangle",
@@ -24,22 +49,13 @@ export const frontendSkills = [
     color: "bg-blue-700",
     level: "Intermediate",
   },
-  {
-    name: "HTML5",
-    icon: "Code",
-    color: "bg-orange-500",
-    level: "Advanced",
-  },
+  { name: "HTML5", icon: "Code", color: "bg-orange-500", level: "Advanced" },
   {
     name: "CSS3",
     icon: "LayoutTemplate",
     color: "bg-blue-400",
     level: "Advanced",
   },
-];
-
-// Styling & UI Libraries
-export const stylingSkills = [
   {
     name: "Tailwind CSS",
     icon: "Paintbrush",
@@ -47,37 +63,30 @@ export const stylingSkills = [
     level: "Advanced",
   },
   {
-    name: "Shadcn/ui",
+    name: "DaisyUI",
     icon: "Palette",
-    color: "bg-gray-700",
+    color: "bg-pink-500",
     level: "Intermediate",
   },
   {
     name: "Framer Motion",
     icon: "Move3D",
-    color: "bg-pink-500",
+    color: "bg-pink-600",
     level: "Intermediate",
-  },
-  {
-    name: "Responsive Design",
-    icon: "Smartphone",
-    color: "bg-green-500",
-    level: "Advanced",
   },
 ];
 
-// Backend & Database
 export const backendSkills = [
   {
-    name: "Node.js & Express",
+    name: "Node.js",
     icon: "Hexagon",
-    color: "bg-lime-600",
+    color: "bg-green-600",
     level: "Intermediate",
   },
   {
-    name: "MongoDB",
-    icon: "Database",
-    color: "bg-green-600",
+    name: "Express.js",
+    icon: "Server",
+    color: "bg-green-500",
     level: "Intermediate",
   },
   {
@@ -87,21 +96,29 @@ export const backendSkills = [
     level: "Intermediate",
   },
   {
+    name: "JWT Authentication",
+    icon: "Key",
+    color: "bg-orange-600",
+    level: "Intermediate",
+  },
+  {
     name: "WebSockets",
     icon: "Wifi",
     color: "bg-green-700",
     level: "Beginner",
   },
+];
+
+export const databaseSkills = [
   {
-    name: "JWT",
-    icon: "Key",
-    color: "bg-orange-600",
+    name: "MongoDB",
+    icon: "Database",
+    color: "bg-green-600",
     level: "Intermediate",
   },
 ];
 
-// State Management & Tools
-export const toolsSkills = [
+export const miscSkills = [
   {
     name: "Zustand",
     icon: "Settings2",
@@ -115,122 +132,58 @@ export const toolsSkills = [
     level: "Advanced",
   },
   {
-    name: "Thunder Client",
-    icon: "Zap",
-    color: "bg-purple-600",
-    level: "Advanced",
-  },
-  {
     name: "Postman",
     icon: "Zap",
     color: "bg-purple-600",
     level: "Intermediate",
   },
-];
-
-// DevOps & Deployment
-export const devopsSkills = [
-  {
-    name: "Vercel",
-    icon: "Globe",
-    color: "bg-black",
-    level: "Intermediate",
-  },
-  {
-    name: "Docker",
-    icon: "Container",
-    color: "bg-blue-700",
-    level: "Beginner",
-  },
-];
-
-// Testing & Quality Assurance
-export const testingSkills = [
-  {
-    name: "Jest",
-    icon: "TestTube",
-    color: "bg-red-600",
-    level: "Beginner",
-  },
-  {
-    name: "ESLint",
-    icon: "CheckCircle",
-    color: "bg-blue-500",
-    level: "Intermediate",
-  },
-];
-
-// Graphics & Multimedia
-export const graphicsSkills = [
+  { name: "Vercel", icon: "Globe", color: "bg-black", level: "Intermediate" },
   {
     name: "Three.js",
     icon: "Box",
     color: "bg-slate-700",
     level: "Intermediate",
   },
-  {
-    name: "Image Optimization",
-    icon: "ImagePlus",
-    color: "bg-amber-600",
-    level: "Intermediate",
-  },
 ];
 
-// Combined skills array (if you want to keep the original structure)
-export const skills = [
+/* ------------------------------------------------------------------ */
+/*  Combined exports – what the component actually consumes           */
+/* ------------------------------------------------------------------ */
+export const allSkills = [
   ...frontendSkills,
-  ...stylingSkills,
   ...backendSkills,
-  ...toolsSkills,
-  ...devopsSkills,
-  ...testingSkills,
-  ...graphicsSkills,
+  ...databaseSkills,
+  ...miscSkills,
 ];
 
-// Skills with categories for advanced display
 export const skillCategories = [
   {
-    category: "Frontend Development",
+    category: "Frontend",
     skills: frontendSkills,
     icon: "Monitor",
     color: "bg-blue-600",
   },
   {
-    category: "Styling & UI",
-    skills: stylingSkills,
-    icon: "Paintbrush2",
-    color: "bg-pink-600",
-  },
-  {
-    category: "Backend & APIs",
+    category: "Backend",
     skills: backendSkills,
     icon: "Server",
     color: "bg-green-600",
   },
   {
-    category: "Development Tools",
-    skills: toolsSkills,
+    category: "Database",
+    skills: databaseSkills,
+    icon: "Database",
+    color: "bg-emerald-600",
+  },
+  {
+    category: "Miscellaneous",
+    skills: miscSkills,
     icon: "Wrench",
-    color: "bg-purple-600",
-  },
-  {
-    category: "DevOps & Deployment",
-    skills: devopsSkills,
-    icon: "Cloud",
-    color: "bg-gray-600",
-  },
-  {
-    category: "Testing & Quality",
-    skills: testingSkills,
-    icon: "Bug",
-    color: "bg-red-600",
-  },
-  {
-    category: "Graphics & Media",
-    skills: graphicsSkills,
-    icon: "Image",
-    color: "bg-amber-600",
+    color: "bg-gray-700",
   },
 ];
 
-export default skills;
+/* ------------------------------------------------------------------ */
+/*  Default export – a flat list (kept for backward compatibility)   */
+/* ------------------------------------------------------------------ */
+export default allSkills;

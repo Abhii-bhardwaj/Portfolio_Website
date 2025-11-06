@@ -1,8 +1,6 @@
-
 import { useState, useCallback, memo } from "react";
 import { motion } from "framer-motion";
-import { User, Send, Mail, FileText, Loader, CheckCircle, AlertCircle } from "lucide-react";
-import Button from "./Button";
+import { Mail, Loader } from "lucide-react";
 import useThemeStore from "../../Stores/useThemeStore";
 
 // Constants
@@ -14,99 +12,19 @@ const EMAILJS_CONFIG = {
 const TO_EMAIL = "abhibhardwaj622@gmail.com";
 const MESSAGE_TIMEOUT = 5000;
 
-// CSS constants
-const BASE_CLASSES = {
-  container: "rounded-xl p-6 shadow-xl",
-  darkContainer: "bg-gray-800/80 backdrop-blur-sm border-gray-700",
-  lightContainer: "bg-white/80 backdrop-blur-sm border-gray-200",
-  label: "block text-xs font-semibold mb-1.5",
-  darkLabel: "text-gray-200",
-  lightLabel: "text-gray-700",
-  input: "w-full pr-3 py-2 rounded-lg border-2 focus:outline-none focus:ring-4 transition-all duration-200",
-  darkInput: "bg-gray-800 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20",
-  lightInput: "bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500/20",
-  success: "mb-5 p-3 rounded-lg border-l-4 flex items-center",
-  darkSuccess: "bg-green-900/30 border-green-400 text-green-300",
-  lightSuccess: "bg-green-50 border-green-400 text-green-700",
-  error: "mb-5 p-3 rounded-lg border-l-4 flex items-center",
-  darkError: "bg-red-900/30 border-red-400 text-red-300",
-  lightError: "bg-red-50 border-red-400 text-red-700",
-  footer: "mt-5 text-center text-xs border-t pt-5",
-  darkFooter: "text-gray-400 border-gray-700",
-  lightFooter: "text-gray-600 border-gray-200",
-  link: "font-semibold transition-colors duration-200 hover:underline",
-  darkLink: "text-blue-400 hover:text-blue-300",
-  lightLink: "text-blue-600 hover:text-blue-700",
-};
-
-const FormField = memo(
-  ({ label, id, type = "text", as = "input", required = false, value, onChange, placeholder = "", icon: Icon }) => {
-    const { isDarkMode = false } = useThemeStore();
-
-    return (
-      <motion.div
-        className="mb-5"
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-20px" }}
-        transition={{ duration: 0.3 }}
-      >
-        <label
-          htmlFor={id}
-          className={`${BASE_CLASSES.label} ${isDarkMode ? BASE_CLASSES.darkLabel : BASE_CLASSES.lightLabel}`}
-        >
-          {label} {required && <span className="text-red-500">*</span>}
-        </label>
-        <div className="relative">
-          {Icon && (
-            <Icon
-              size={18}
-              className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
-                isDarkMode ? "text-gray-400" : "text-gray-500"
-              }`}
-            />
-          )}
-          {as === "textarea" ? (
-            <textarea
-              id={id}
-              name={id}
-              value={value}
-              onChange={onChange}
-              required={required}
-              rows="5"
-              placeholder={placeholder}
-              className={`${BASE_CLASSES.input} ${isDarkMode ? BASE_CLASSES.darkInput : BASE_CLASSES.lightInput} ${
-                Icon ? "pl-11" : "pl-3"
-              } resize-none`}
-              aria-label={label}
-              aria-required={required}
-            />
-          ) : (
-            <input
-              type={type}
-              id={id}
-              name={id}
-              value={value}
-              onChange={onChange}
-              required={required}
-              placeholder={placeholder}
-              className={`${BASE_CLASSES.input} ${isDarkMode ? BASE_CLASSES.darkInput : BASE_CLASSES.lightInput} ${
-                Icon ? "pl-11" : "pl-3"
-              }`}
-              aria-label={label}
-              aria-required={required}
-            />
-          )}
-        </div>
-      </motion.div>
-    );
-  }
-);
-
 const ContactForm = memo(() => {
   const { isDarkMode = false } = useThemeStore();
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
-  const [formStatus, setFormStatus] = useState({ isSubmitting: false, isSubmitted: false, error: null });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [formStatus, setFormStatus] = useState({
+    isSubmitting: false,
+    isSubmitted: false,
+    error: null,
+  });
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -131,6 +49,10 @@ const ContactForm = memo(() => {
           isSubmitted: false,
           error: "Please fill in all required fields with a valid email.",
         });
+        setTimeout(
+          () => setFormStatus((prev) => ({ ...prev, error: null })),
+          MESSAGE_TIMEOUT
+        );
         return;
       }
 
@@ -165,132 +87,237 @@ const ContactForm = memo(() => {
         setFormStatus({ isSubmitting: false, isSubmitted: true, error: null });
         setFormData({ name: "", email: "", subject: "", message: "" });
 
-        setTimeout(() => setFormStatus((prev) => ({ ...prev, isSubmitted: false })), MESSAGE_TIMEOUT);
+        setTimeout(
+          () => setFormStatus((prev) => ({ ...prev, isSubmitted: false })),
+          MESSAGE_TIMEOUT
+        );
       } catch (error) {
         setFormStatus({
           isSubmitting: false,
           isSubmitted: false,
           error: "Failed to send message. Try again or contact via email.",
         });
-        setTimeout(() => setFormStatus((prev) => ({ ...prev, error: null })), MESSAGE_TIMEOUT);
+        setTimeout(
+          () => setFormStatus((prev) => ({ ...prev, error: null })),
+          MESSAGE_TIMEOUT
+        );
       }
     },
     [formData]
   );
 
+  const inputBaseClasses = `w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:ring-4 transition-all duration-300 ${
+    isDarkMode
+      ? "bg-gray-900/50 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500/20 focus:bg-gray-900/70"
+      : "bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
+  }`;
+
+  const labelClasses = `block text-sm font-bold mb-2 ${
+    isDarkMode ? "text-gray-300" : "text-gray-700"
+  }`;
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-20px" }}
-      transition={{ duration: 0.4 }}
-      className={`${BASE_CLASSES.container} ${isDarkMode ? BASE_CLASSES.darkContainer : BASE_CLASSES.lightContainer}`}
-    >
+    <div className="space-y-5">
+      {/* Success Message */}
       {formStatus.isSubmitted && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={`${BASE_CLASSES.success} ${isDarkMode ? BASE_CLASSES.darkSuccess : BASE_CLASSES.lightSuccess}`}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`p-4 rounded-xl border-2 flex items-start gap-3 ${
+            isDarkMode
+              ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300"
+              : "bg-emerald-50 border-emerald-300 text-emerald-700"
+          }`}
           role="alert"
-          aria-describedby="success-message"
-        >
-          <CheckCircle size={18} className="mr-2 flex-shrink-0" />
+          aria-describedby="success-message">
+          <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg
+              className="w-3 h-3 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={3}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
           <div id="success-message">
-            <p className="font-medium">Message sent successfully!</p>
-            <p className="text-xs opacity-80">I'll respond soon.</p>
+            <p className="font-bold text-sm">Message sent successfully!</p>
+            <p className="text-xs opacity-80 mt-1">
+              I'll get back to you soon.
+            </p>
           </div>
         </motion.div>
       )}
+
+      {/* Error Message */}
       {formStatus.error && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={`${BASE_CLASSES.error} ${isDarkMode ? BASE_CLASSES.darkError : BASE_CLASSES.lightError}`}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`p-4 rounded-xl border-2 flex items-start gap-3 ${
+            isDarkMode
+              ? "bg-red-500/10 border-red-500/30 text-red-300"
+              : "bg-red-50 border-red-300 text-red-700"
+          }`}
           role="alert"
-          aria-describedby="error-message"
-        >
-          <AlertCircle size={18} className="mr-2 flex-shrink-0" />
-          <div id="error-message">
-            <p className="font-medium">Error</p>
-            <p className="text-xs">{formStatus.error}</p>
+          aria-describedby="error-message">
+          <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span className="text-white text-xs font-bold">!</span>
           </div>
-        </motion.div >
-      )}
-      <form onSubmit={handleSubmit}>
-        <FormField
-          label="Name"
-          id="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          placeholder="Your full name"
-          icon={User}
-        />
-        <FormField
-          label="Email"
-          id="email"
-          type="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          placeholder="your.email@example.com"
-          icon={Mail}
-        />
-        <FormField
-          label="Subject"
-          id="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          required
-          placeholder="Project Inquiry"
-          icon={FileText}
-        />
-        <FormField
-          label="Message"
-          id="message"
-          as="textarea"
-          value={formData.message}
-          onChange={handleChange}
-          required
-          placeholder="Let's discuss a project..."
-          
-        />
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20px" }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-        >
-          <Button
-            type="submit"
-            disabled={formStatus.isSubmitting}
-            fullWidth
-            icon={formStatus.isSubmitting ? <Loader size={16} className="animate-spin" /> : <Send size={16} />}
-            className={`text-base py-3 ${formStatus.isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
-            aria-disabled={formStatus.isSubmitting}
-          >
-            {formStatus.isSubmitting ? "Sending..." : "Send Email"}
-          </Button>
+          <div id="error-message">
+            <p className="font-bold text-sm">Error</p>
+            <p className="text-xs opacity-80 mt-1">{formStatus.error}</p>
+          </div>
         </motion.div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Name Field */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}>
+          <label htmlFor="name" className={labelClasses}>
+            Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            placeholder="Your full name"
+            className={inputBaseClasses}
+            aria-label="Name"
+            aria-required="true"
+          />
+        </motion.div>
+
+        {/* Email Field */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15 }}>
+          <label htmlFor="email" className={labelClasses}>
+            Email <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            placeholder="your.email@example.com"
+            className={inputBaseClasses}
+            aria-label="Email"
+            aria-required="true"
+          />
+        </motion.div>
+
+        {/* Subject Field */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}>
+          <label htmlFor="subject" className={labelClasses}>
+            Subject <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            required
+            placeholder="Project Inquiry"
+            className={inputBaseClasses}
+            aria-label="Subject"
+            aria-required="true"
+          />
+        </motion.div>
+
+        {/* Message Field */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.25 }}>
+          <label htmlFor="message" className={labelClasses}>
+            Message <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            rows="5"
+            placeholder="Let's discuss your project..."
+            className={`${inputBaseClasses} resize-none`}
+            aria-label="Message"
+            aria-required="true"
+          />
+        </motion.div>
+
+        {/* Submit Button */}
+        <motion.button
+          type="submit"
+          disabled={formStatus.isSubmitting}
+          whileHover={{ scale: formStatus.isSubmitting ? 1 : 1.02 }}
+          whileTap={{ scale: formStatus.isSubmitting ? 1 : 0.98 }}
+          className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 ${
+            formStatus.isSubmitting
+              ? "bg-gray-600 cursor-not-allowed opacity-70"
+              : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:shadow-blue-500/50"
+          }`}
+          aria-disabled={formStatus.isSubmitting}>
+          {formStatus.isSubmitting ? (
+            <>
+              <Loader size={20} className="animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              <Mail size={20} />
+              Send Message
+            </>
+          )}
+        </motion.button>
+
+        {/* Footer */}
+        <div
+          className={`text-center text-sm pt-4 border-t ${
+            isDarkMode
+              ? "border-gray-700 text-gray-400"
+              : "border-gray-200 text-gray-600"
+          }`}>
+          <p>
+            Or email directly:{" "}
+            <a
+              href={`mailto:${TO_EMAIL}`}
+              className={`font-semibold transition-colors ${
+                isDarkMode
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-700"
+              }`}>
+              {TO_EMAIL}
+            </a>
+          </p>
+        </div>
       </form>
-      <div
-        className={`${BASE_CLASSES.footer} ${isDarkMode ? BASE_CLASSES.darkFooter : BASE_CLASSES.lightFooter}`}
-      >
-        <p>
-          Or email{" "}
-          <a
-            href={`mailto:${TO_EMAIL}`}
-            className={`${BASE_CLASSES.link} ${isDarkMode ? BASE_CLASSES.darkLink : BASE_CLASSES.lightLink}`}
-          >
-            {TO_EMAIL}
-          </a>
-        </p>
-      </div>
-    </motion.div>
+    </div>
   );
 });
 
-FormField.displayName = "FormField";
 ContactForm.displayName = "ContactForm";
 
 export default ContactForm;

@@ -1,4 +1,4 @@
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { memo, useMemo } from "react";
 import SectionHeading from "../shared/SectionHeading";
@@ -28,103 +28,135 @@ const Projects = () => {
   const { isDarkMode = false } = useThemeStore();
   const currentTheme = useMemo(() => isDarkMode, [isDarkMode]);
 
-  // Memoized project cards
   const projectCards = useMemo(
     () =>
-      projectsData.map((project, index) => (
-        <motion.div
-          key={project.title}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20px" }}
-          transition={{ duration: 0.4, delay: index * 0.05 }}
-          whileHover={{ scale: 1.02 }}
-          className={`${BASE_CLASSES.card} ${
-            currentTheme ? BASE_CLASSES.darkCard : BASE_CLASSES.lightCard
-          }`}
-          role="article"
-          aria-label={`Project: ${project.title}`}>
-          <div className="relative overflow-hidden">
-            <img
-              src={project.image || "/fallback.jpg"}
-              alt={`Screenshot of ${project.title} project`}
-              loading="lazy"
-              decoding="async"
-              onError={(e) => (e.target.src = "/fallback.jpg")}
-              className="w-full h-56 sm:h-64 object-contain transition-transform duration-300 hover:scale-105"
-            />
-            <div
-              className={`absolute inset-0 transition-opacity duration-200 hover:opacity-0 ${
-                currentTheme
-                  ? "bg-gradient-to-t from-gray-900/50 to-transparent"
-                  : "bg-gradient-to-t from-white/20 to-transparent"
-              }`}
-            />
-          </div>
-          <div className="p-5 flex-grow flex flex-col">
-            <h3
-              className={`text-lg font-bold mb-2 ${
-                currentTheme ? "text-white" : "text-gray-900"
-              }`}>
-              {project.title}
-            </h3>
-            <p
-              className={`mb-3 text-sm leading-relaxed flex-grow ${
-                currentTheme ? "text-gray-300" : "text-gray-600"
-              }`}>
-              {project.description}
-            </p>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {project.tech?.map((tech) => (
-                <motion.span
-                  key={tech}
-                  whileHover={{ scale: 1.05 }}
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    currentTheme
-                      ? "bg-blue-600 text-white hover:bg-blue-500"
-                      : "bg-blue-100 text-blue-800 hover:bg-blue-200"
-                  }`}>
-                  {tech}
-                </motion.span>
-              ))}
+      projectsData.map((project, index) => {
+        const hasLive = !!project.liveUrl?.trim();
+        const hasGithub = !!project.githubUrl?.trim();
+        const isComingSoon = project.comingSoon && !hasLive;
+
+        // Determine layout: justify-between only if both buttons exist
+        const justifyClass =
+          (hasLive && hasGithub) || (isComingSoon && hasGithub)
+            ? "justify-between"
+            : "justify-end";
+
+        return (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.4, delay: index * 0.05 }}
+            whileHover={{ scale: 1.02 }}
+            className={`${BASE_CLASSES.card} ${
+              currentTheme ? BASE_CLASSES.darkCard : BASE_CLASSES.lightCard
+            }`}
+            role="article"
+            aria-label={`Project: ${project.title}`}>
+            <div className="relative overflow-hidden">
+              <img
+                src={project.image || "/fallback.jpg"}
+                alt={`Screenshot of ${project.title} project`}
+                loading="lazy"
+                decoding="async"
+                onError={(e) => (e.target.src = "/fallback.jpg")}
+                className="w-full h-56 sm:h-64 object-contain transition-transform duration-300 hover:scale-105"
+              />
+              <div
+                className={`absolute inset-0 transition-opacity duration-200 hover:opacity-0 ${
+                  currentTheme
+                    ? "bg-gradient-to-t from-gray-900/50 to-transparent"
+                    : "bg-gradient-to-t from-white/20 to-transparent"
+                }`}
+              />
             </div>
-            <div className="flex justify-between mt-auto gap-3">
-              {project.liveUrl && (
-                <motion.a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`${BASE_CLASSES.link} ${
-                    currentTheme
-                      ? BASE_CLASSES.darkLinkLive
-                      : BASE_CLASSES.lightLinkLive
-                  }`}
-                  aria-label={`View live demo of ${project.title}`}>
-                  Live Demo <ExternalLink size={14} className="ml-1" />
-                </motion.a>
-              )}
-              {project.githubUrl && (
-                <motion.a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`${BASE_CLASSES.link} ${
-                    currentTheme
-                      ? BASE_CLASSES.darkLinkGithub
-                      : BASE_CLASSES.lightLinkGithub
-                  }`}
-                  aria-label={`View GitHub repository for ${project.title}`}>
-                  GitHub <Github size={14} className="ml-1" />
-                </motion.a>
-              )}
+
+            <div className="p-5 flex-grow flex flex-col">
+              <h3
+                className={`text-lg font-bold mb-2 ${
+                  currentTheme ? "text-white" : "text-gray-900"
+                }`}>
+                {project.title}
+              </h3>
+              <p
+                className={`mb-3 text-sm leading-relaxed flex-grow ${
+                  currentTheme ? "text-gray-300" : "text-gray-600"
+                }`}>
+                {project.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2 mb-3">
+                {project.tech?.map((tech) => (
+                  <motion.span
+                    key={tech}
+                    whileHover={{ scale: 1.05 }}
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      currentTheme
+                        ? "bg-blue-600 text-white hover:bg-blue-500"
+                        : "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                    }`}>
+                    {tech}
+                  </motion.span>
+                ))}
+              </div>
+
+              {/* Buttons + Coming Soon */}
+              <div className={`flex mt-auto gap-3 ${justifyClass}`}>
+                {/* Coming Soon Badge */}
+                {isComingSoon && (
+                  <div
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-semibold text-xs uppercase tracking-wider border ${
+                      currentTheme
+                        ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/40"
+                        : "bg-yellow-100 text-yellow-800 border-yellow-300"
+                    }`}
+                    aria-label="This project is under development">
+                    <Clock size={14} />
+                    Coming Soon
+                  </div>
+                )}
+
+                {/* Live Demo */}
+                {hasLive && (
+                  <motion.a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`${BASE_CLASSES.link} ${
+                      currentTheme
+                        ? BASE_CLASSES.darkLinkLive
+                        : BASE_CLASSES.lightLinkLive
+                    }`}
+                    aria-label={`View live demo of ${project.title}`}>
+                    Live Demo <ExternalLink size={14} className="ml-1" />
+                  </motion.a>
+                )}
+
+                {/* GitHub */}
+                {hasGithub && (
+                  <motion.a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`${BASE_CLASSES.link} ${
+                      currentTheme
+                        ? BASE_CLASSES.darkLinkGithub
+                        : BASE_CLASSES.lightLinkGithub
+                    }`}
+                    aria-label={`View GitHub repository for ${project.title}`}>
+                    GitHub <Github size={14} className="ml-1" />
+                  </motion.a>
+                )}
+              </div>
             </div>
-          </div>
-        </motion.div>
-      )),
+          </motion.div>
+        );
+      }),
     [currentTheme]
   );
 

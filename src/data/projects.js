@@ -1,4 +1,4 @@
-// projects.js - Data for projects section
+// data/projects.js
 export const projects = [
   {
     id: 1,
@@ -15,8 +15,9 @@ export const projects = [
       "Redis",
       "JWT Auth",
     ],
-    liveUrl: "#",
+    liveUrl: "",
     githubUrl: "https://github.com/Abhii-bhardwaj/Sociofy",
+    comingSoon: true, // ← Added
     featured: true,
   },
   {
@@ -28,6 +29,7 @@ export const projects = [
     tech: ["React.js", "Tailwind CSS", "Three.js", "Framer Motion"],
     liveUrl: "https://anniversary-website-rho.vercel.app/",
     githubUrl: "https://github.com/Abhii-bhardwaj/Anniversary-website",
+    comingSoon: false, // ← Has live link
     featured: true,
   },
   {
@@ -37,11 +39,11 @@ export const projects = [
       "A dynamic news aggregator web application developed using React and NewsAPI. It provides real-time news updates across multiple categories such as technology, business, health, and sports. Features include a search bar, category filters, dark mode, and infinite scroll for seamless content discovery. The UI is fast, user-friendly, and built for optimal readability across all devices.",
     image: "/news-app.png",
     tech: ["React.js", "Tailwind CSS", "NewsAPI", "Zustand"],
-    liveUrl: "#",
+    liveUrl: "",
     githubUrl: "https://github.com/Abhii-bhardwaj/News-App",
+    comingSoon: true, // ← Added
     featured: true,
   },
-
   {
     id: 4,
     title: "Weather Forecast App",
@@ -51,6 +53,7 @@ export const projects = [
     tech: ["React.js", "Styled Components", "OpenWeather API"],
     liveUrl: "https://abhii-weather-app.netlify.app/",
     githubUrl: "https://github.com/Abhii-bhardwaj/Weather_App",
+    comingSoon: false, // ← Has live link
     featured: false,
   },
 ];

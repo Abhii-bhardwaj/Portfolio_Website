@@ -7,15 +7,16 @@ import useThemeStore from "../../Stores/useThemeStore";
 const INFO_DATA = [
   { label: "Name", value: "Abhishek Bhardwaj", icon: "👨‍💻" },
   { label: "Email", value: "abhibhardwaj622@gmail.com", icon: "📧" },
-  { label: "Education", value: "BCA", icon: "🎓" },
+  { label: "Education", value: "MCA (Persuing)", icon: "🎓" },
   { label: "Location", value: "Agra, India", icon: "📍" },
 ];
 
 const PARAGRAPH_CONTENT = [
-  "I'm a recent BCA graduate with a strong passion for building beautiful and functional web experiences. What started as curiosity with HTML and CSS has evolved into expertise in modern front-end development.",
-  "I specialize in creating responsive, interactive web applications using React.js, Next.js, and Tailwind CSS. My focus is on crafting seamless user experiences with clean, maintainable code and cutting-edge technologies like Three.js for 3D web experiences.",
-  "As a fresh graduate entering the tech industry, I'm eager to contribute to innovative projects and collaborate with teams that value creativity and technical excellence. Let's connect and build something amazing together!",
+  "I'm currently pursuing my MCA at Lovely Professional University, building on my foundation as a BCA graduate with a deep passion for creating modern, interactive web experiences. What began as simple curiosity with HTML and CSS has grown into a strong command of frontend technologies.",
+  "I specialize in developing responsive and dynamic web applications using React.js, Tailwind CSS, and DaisyUI. My focus is on building clean, scalable, and visually appealing UIs while experimenting with advanced tools like Framer Motion and Three.js for immersive user experiences.",
+  "As I continue growing in the tech world, my goal is to become an industry-level frontend developer and work on impactful, high-quality projects that blend creativity with technology. Let’s connect and create something extraordinary together!",
 ];
+
 
 
 // CSS constants
@@ -209,14 +210,14 @@ const ImageSection = memo(
               </div>
             ) : null}
             <img
-              src="/Abhi.jpg"
+              src="/Abhi.jpeg"
               alt="Abhishek Bhardwaj, Frontend Developer and BCA Student"
               loading="lazy"
               fetchPriority="high"
               decoding="async"
               onLoad={handleImageLoad}
               onError={handleImageError}
-              className={`w-full h-full object-cover transition-all duration-500 ${
+              className={`w-full h-full object-contain transition-all duration-500 ${
                 imageLoaded && !imageError
                   ? "opacity-100 scale-100"
                   : "opacity-0 scale-105"
@@ -301,12 +302,12 @@ const About = () => {
                 className={`text-2xl lg:text-3xl font-bold mb-6 ${
                   currentTheme ? "text-white" : "text-gray-900"
                 }`}>
-                BCA {}
+                Frontend {}
                 <span
                   className={` mt-1 ${
                     currentTheme ? "text-blue-400" : "text-blue-600"
                   }`}>
-                  Graduate | 2025
+                  Developer
                 </span>
               </motion.h3>
               <ParagraphContent currentTheme={currentTheme} />

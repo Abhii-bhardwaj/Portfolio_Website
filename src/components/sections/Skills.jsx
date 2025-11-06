@@ -8,37 +8,35 @@ import {
   LayoutTemplate,
   Settings2,
   Github,
-  Smartphone,
   PlugZap,
   Move3D,
   Zap,
   Box,
   Hexagon,
-  ImagePlus,
   Triangle,
   Paintbrush,
-  Circle,
   Database,
   Wifi,
   Palette,
   Globe,
-  Container,
-  TestTube,
   Key,
-  CheckCircle,
   FileType,
   Grid3X3,
-  Layers,
+  Wrench,
+  Monitor,
+  Server,
+  Circle,
 } from "lucide-react";
-import { skillCategories, skills as allSkills } from "../../data/skills";
+
+import { skillCategories, allSkills } from "../../data/skills";
 import useThemeStore from "../../Stores/useThemeStore";
 
-// Optimized CSS constants
+// CSS Classes
 const CLASSES = {
   section: "py-16 transition-colors duration-300",
   darkBg: "bg-gradient-to-br from-gray-900 to-gray-800",
   lightBg: "bg-gradient-to-br from-gray-50 to-blue-50",
-  card: "relative p-4 rounded-xl cursor-pointer transition-all duration-300 group",
+  card: "relative p-6 rounded-2xl cursor-pointer transition-all duration-300 group flex flex-col items-center justify-center h-32",
   darkCard:
     "bg-gray-800/50 border border-gray-700/30 hover:bg-gray-700/60 hover:border-gray-600/50",
   lightCard:
@@ -49,7 +47,7 @@ const CLASSES = {
   inactiveCategoryBtn: "hover:bg-gray-100 dark:hover:bg-gray-700",
 };
 
-// Optimized icon mapping
+// Icon mapping
 const ICONS = {
   Code,
   Atom,
@@ -57,87 +55,62 @@ const ICONS = {
   LayoutTemplate,
   Settings2,
   Github,
-  Smartphone,
   PlugZap,
   Move3D,
   Zap,
   Box,
   Hexagon,
-  ImagePlus,
   Triangle,
   Paintbrush,
   Database,
   Wifi,
   Palette,
   Globe,
-  Container,
-  TestTube,
   Key,
-  CheckCircle,
   FileType,
   Grid3X3,
-  Layers,
+  Wrench,
+  Monitor,
+  Server,
   Default: Circle,
 };
 
-// Level to percentage mapping
-const LEVEL_MAP = { Advanced: 90, Intermediate: 70, Beginner: 50 };
-
-// Optimized SkillCard with minimal animations
-const SkillCard = memo(({ skill, index, isVisible = true }) => {
+// Skill Card – No progress bar, only level badge
+const SkillCard = memo(({ skill, index }) => {
   const { isDarkMode } = useThemeStore();
-
-  if (!isVisible) return null;
-
   const Icon = ICONS[skill.icon] || ICONS.Default;
-  const percentage = LEVEL_MAP[skill.level] || 50;
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3, delay: index * 0.02 }}
-      whileHover={{ y: -2, scale: 1.02 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      whileHover={{ y: -6, scale: 1.05 }}
       className={`${CLASSES.card} ${
         isDarkMode ? CLASSES.darkCard : CLASSES.lightCard
       }`}>
       {/* Icon */}
       <div
-        className={`w-10 h-10 mx-auto rounded-lg flex items-center justify-center text-white mb-2 ${skill.color}`}>
-        <Icon size={20} />
+        className={`w-14 h-14 rounded-xl flex items-center justify-center text-white mb-3 ${skill.color} shadow-lg`}>
+        <Icon size={28} />
       </div>
 
-      {/* Name */}
+      {/* Skill Name */}
       <h3
-        className={`font-medium text-sm mb-1 ${
-          isDarkMode ? "text-gray-200" : "text-gray-800"
+        className={`font-semibold text-base text-center ${
+          isDarkMode ? "text-gray-100" : "text-gray-800"
         }`}>
         {skill.name}
       </h3>
 
-      {/* Progress Bar */}
-      <div
-        className={`w-full h-1.5 rounded-full ${
-          isDarkMode ? "bg-gray-700" : "bg-gray-200"
-        }`}>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 0.8, delay: index * 0.02 + 0.2 }}
-          className={`h-full rounded-full ${skill.color
-            .replace("bg-", "bg-gradient-to-r from-")
-            .replace(/-([\d]+)/, "-$1 to-$1")}`}
-        />
-      </div>
-
       {/* Level Badge */}
       <span
-        className={`text-xs mt-1 px-2 py-0.5 rounded-full ${
+        className={`mt-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase ${
           skill.level === "Advanced"
-            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+            ? "bg-green-500/20 text-green-400 border border-green-500/40"
             : skill.level === "Intermediate"
-            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-            : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+            ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/40"
+            : "bg-blue-500/20 text-blue-400 border border-blue-500/40"
         }`}>
         {skill.level}
       </span>
@@ -149,27 +122,23 @@ const Skills = () => {
   const { isDarkMode } = useThemeStore();
   const [activeCategory, setActiveCategory] = useState("all");
 
-  // Optimized category filtering
+  // Show ALL skills in the selected category
   const filteredSkills = useMemo(() => {
     if (activeCategory === "all") return allSkills;
-    const category = skillCategories.find(
-      (cat) => cat.category === activeCategory
-    );
-    return category ? category.skills : [];
+    const cat = skillCategories.find((c) => c.category === activeCategory);
+    return cat ? cat.skills : [];
   }, [activeCategory]);
 
-  // Optimized category change handler
-  const handleCategoryChange = useCallback((category) => {
-    setActiveCategory(category);
+  const handleCategoryChange = useCallback((cat) => {
+    setActiveCategory(cat);
   }, []);
 
-  // Compact category tabs
   const categoryTabs = useMemo(
     () => [
       { id: "all", name: "All", icon: Grid3X3, count: allSkills.length },
       ...skillCategories.map((cat) => ({
         id: cat.category,
-        name: cat.category.split(" ")[0], // First word only
+        name: cat.category,
         icon: ICONS[cat.icon] || ICONS.Default,
         count: cat.skills.length,
       })),
@@ -185,11 +154,11 @@ const Skills = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading
           title="My Skills"
-          description="Technologies and tools I work with daily"
+          description="Technologies I work with every day"
         />
 
-        {/* Compact Category Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
           {categoryTabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeCategory === tab.id;
@@ -208,7 +177,7 @@ const Skills = () => {
                 <Icon size={16} />
                 <span className="text-sm">{tab.name}</span>
                 <span
-                  className={`text-xs px-1.5 py-0.5 rounded-full ${
+                  className={`text-xs px-2 py-0.5 rounded-full ${
                     isActive
                       ? "bg-white/20"
                       : isDarkMode
@@ -222,33 +191,28 @@ const Skills = () => {
           })}
         </div>
 
-        {/* Skills Grid - Optimized Layout */}
+        {/* Responsive Grid – Max 5 columns */}
         <motion.div
           key={activeCategory}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3">
-          {filteredSkills.map((skill, index) => (
-            <SkillCard
-              key={`${activeCategory}-${skill.name}`}
-              skill={skill}
-              index={index}
-              isVisible={true}
-            />
+          transition={{ duration: 0.4 }}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
+          {filteredSkills.map((skill, i) => (
+            <SkillCard key={skill.name} skill={skill} index={i} />
           ))}
         </motion.div>
 
-        {/* Quick Stats */}
+        {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-12 text-center">
-          <div className="flex justify-center items-center gap-6 flex-wrap">
+          <div className="flex justify-center gap-6 flex-wrap">
             <div
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-5 py-2.5 rounded-lg ${
                 isDarkMode ? "bg-gray-800/50" : "bg-white/70"
               }`}>
               <span
@@ -256,14 +220,14 @@ const Skills = () => {
                   isDarkMode ? "text-gray-300" : "text-gray-700"
                 }`}>
                 Showing{" "}
-                <span className="font-semibold text-blue-500">
+                <span className="font-bold text-blue-500">
                   {filteredSkills.length}
                 </span>{" "}
                 skills
               </span>
             </div>
             <div
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-5 py-2.5 rounded-lg ${
                 isDarkMode ? "bg-gray-800/50" : "bg-white/70"
               }`}>
               <span
@@ -277,14 +241,14 @@ const Skills = () => {
               </span>
             </div>
             <div
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-5 py-2.5 rounded-lg ${
                 isDarkMode ? "bg-gray-800/50" : "bg-white/70"
               }`}>
               <span
                 className={`text-sm ${
                   isDarkMode ? "text-gray-300" : "text-gray-700"
                 }`}>
-                Always learning & growing 🚀
+                Always learning & growing
               </span>
             </div>
           </div>
