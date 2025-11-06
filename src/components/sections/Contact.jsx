@@ -3,57 +3,13 @@ import {
   Linkedin,
   Github,
   Twitter,
-  Sparkles,
   ArrowUpRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { memo, useMemo, useState } from "react";
-
-// Mock components - replace with your actual imports
-const SectionHeading = ({ title, description }) => (
-  <div className="text-center mb-16">
-    <motion.h2
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-      {title}
-    </motion.h2>
-    <motion.p
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.2 }}
-      className="text-lg text-gray-400">
-      {description}
-    </motion.p>
-  </div>
-);
-
-const ContactForm = () => (
-  <div className="space-y-4">
-    <input
-      type="text"
-      placeholder="Your Name"
-      className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 focus:border-blue-500 focus:outline-none transition-all"
-    />
-    <input
-      type="email"
-      placeholder="Your Email"
-      className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 focus:border-blue-500 focus:outline-none transition-all"
-    />
-    <textarea
-      placeholder="Your Message"
-      rows="4"
-      className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 focus:border-blue-500 focus:outline-none transition-all resize-none"
-    />
-    <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all">
-      Send Message
-    </button>
-  </div>
-);
-
-const useThemeStore = () => ({ isDarkMode: true });
+import SectionHeading from "../shared/SectionHeading";
+import ContactForm from "../ui/ContactForm"; // Import your actual ContactForm
+import useThemeStore from "../../Stores/useThemeStore";
 
 const Contact = () => {
   const { isDarkMode = false } = useThemeStore();
@@ -287,6 +243,7 @@ const Contact = () => {
                     Send a Message
                   </h3>
                 </div>
+                {/* YOUR ACTUAL CONTACT FORM COMPONENT */}
                 <ContactForm />
               </div>
             </motion.div>
