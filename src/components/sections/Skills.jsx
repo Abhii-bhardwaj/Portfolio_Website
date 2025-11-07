@@ -171,6 +171,7 @@ const Skills = () => {
 
   return (
     <section
+      id="skills"
       className={`${CLASSES.section} ${
         isDarkMode ? CLASSES.darkBg : CLASSES.lightBg
       }`}>
