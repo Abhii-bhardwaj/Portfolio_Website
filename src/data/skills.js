@@ -91,32 +91,32 @@ export const softSkills = [
     name: "Problem Solving",
     icon: "Lightbulb",
     color: "bg-yellow-500",
-    level: "Advanced",
+    level: "",
   },
   {
     name: "Communication",
     icon: "MessageSquare",
     color: "bg-blue-600",
-    level: "Advanced",
+    level: "",
   },
   {
     name: "Team Collaboration",
     icon: "Users",
     color: "bg-purple-600",
-    level: "Advanced",
+    level: "",
   },
   {
     name: "Time Management",
     icon: "Clock",
     color: "bg-orange-500",
-    level: "Advanced",
+    level: "",
   },
 
   {
     name: "Self-Learning",
     icon: "BookOpen",
     color: "bg-cyan-600",
-    level: "Advanced",
+    level: "",
   },
 ];
 
