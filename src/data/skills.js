@@ -47,12 +47,12 @@ export const technicalSkills = [
     color: "bg-green-500",
     level: "Intermediate",
   },
-  {
-    name: "REST APIs",
-    icon: "PlugZap",
-    color: "bg-indigo-600",
-    level: "Intermediate",
-  },
+  // {
+  //   name: "REST APIs",
+  //   icon: "PlugZap",
+  //   color: "bg-indigo-600",
+  //   level: "Intermediate",
+  // },
 
   // Database
   {
