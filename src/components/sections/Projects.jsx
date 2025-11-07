@@ -113,7 +113,7 @@ const Projects = () => {
                     }`}
                     aria-label="This project is under development">
                     <Clock size={14} />
-                    Coming Soon
+                    Working
                   </div>
                 )}
 
