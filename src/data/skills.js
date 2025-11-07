@@ -5,7 +5,7 @@ export const technicalSkills = [
     name: "Next.js",
     icon: "Triangle",
     color: "bg-blue-500",
-    level: "Intermediate",
+    level: "Basic",
   },
   {
     name: "JavaScript (ES6+)",
@@ -17,7 +17,7 @@ export const technicalSkills = [
     name: "TypeScript",
     icon: "FileType",
     color: "bg-blue-700",
-    level: "Intermediate",
+    level: "Basic",
   },
 
   // Styling
