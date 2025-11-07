@@ -26,6 +26,17 @@ import {
   Monitor,
   Server,
   Circle,
+  Heart,
+  Lightbulb,
+  MessageSquare,
+  Users,
+  Clock,
+  RefreshCw,
+  Brain,
+  Sparkles,
+  Award,
+  Eye,
+  BookOpen,
 } from "lucide-react";
 
 import { skillCategories, allSkills } from "../../data/skills";
@@ -47,7 +58,7 @@ const CLASSES = {
   inactiveCategoryBtn: "hover:bg-gray-100 dark:hover:bg-gray-700",
 };
 
-// Icon mapping
+// Icon mapping - Updated with soft skill icons
 const ICONS = {
   Code,
   Atom,
@@ -72,6 +83,17 @@ const ICONS = {
   Wrench,
   Monitor,
   Server,
+  Heart,
+  Lightbulb,
+  MessageSquare,
+  Users,
+  Clock,
+  RefreshCw,
+  Brain,
+  Sparkles,
+  Award,
+  Eye,
+  BookOpen,
   Default: Circle,
 };
 
@@ -133,9 +155,10 @@ const Skills = () => {
     setActiveCategory(cat);
   }, []);
 
+  // Only 3 tabs: All, Technical, Soft Skills
   const categoryTabs = useMemo(
     () => [
-      { id: "all", name: "All", icon: Grid3X3, count: allSkills.length },
+      { id: "all", name: "All Skills", icon: Grid3X3, count: allSkills.length },
       ...skillCategories.map((cat) => ({
         id: cat.category,
         name: cat.category,
@@ -154,10 +177,10 @@ const Skills = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading
           title="My Skills"
-          description="Technologies I work with every day"
+          description="Technical expertise and soft skills that drive success"
         />
 
-        {/* Category Tabs */}
+        {/* Category Tabs - Now only 3 buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-10">
           {categoryTabs.map((tab) => {
             const Icon = tab.icon;

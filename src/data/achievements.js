@@ -48,26 +48,8 @@ export const ACHIEVEMENTS_DATA = [
     certificateLink:
       "https://drive.google.com/file/d/16AA_rQ2Ip7-VISBVfQBoKzsK7XJBNjX_/view?usp=drive_link",
   },
-  {
-    id: 5,
-    title: "MCA-MAH-CET 2025",
-    description:
-      "Achieved an outstanding 98.2 percentile in the MCA-MAH-CET 2025, demonstrating exceptional aptitude in logical reasoning, quantitative analysis, and computer concepts, securing a top-tier rank among thousands of candidates.",
-    icon: "🏆",
-    count: "98.2%ile",
-    category: "Academic Excellence",
-    gradient: "from-violet-600 to-purple-600",
-  },
-  {
-    id: 6,
-    title: "BCA Graduate",
-    description:
-      "Completed Bachelor of Computer Applications with distinction, gaining comprehensive knowledge in software development, algorithms, and modern programming paradigms.",
-    icon: "🎓",
-    count: "Graduate",
-    category: "Academic",
-    gradient: "from-purple-500 to-pink-500",
-  },
+
+
 ];
 
 export const ACHIEVEMENT_CATEGORIES = {
